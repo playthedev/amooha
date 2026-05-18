@@ -256,15 +256,15 @@ export default function SustainabilityPage() {
           </div>
 
           {/* Metrics grid */}
-          <div className="grid grid-cols-2 gap-px bg-white/8 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-px bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
             {impactMetrics.map(({ value, label }) => (
-              <div key={label} className="flex flex-col justify-between bg-[var(--leaf-dark)] p-10">
-                <p className="display-serif text-6xl font-normal text-[var(--wheat)] leading-none">
+              <div key={label} className="flex min-h-40 flex-col justify-between bg-[var(--leaf-dark)] p-6 sm:min-h-52 sm:p-8 lg:p-10">
+                <p className="display-serif text-4xl font-normal leading-none text-[var(--wheat)] sm:text-5xl lg:text-6xl">
                   {value}
                 </p>
-                <div className="mt-8">
+                <div className="mt-6 sm:mt-8">
                   <div className="mb-3 h-px w-8 bg-[var(--wheat)]/30" />
-                  <p className="label-caps text-[10px] tracking-[0.18em] text-white/50">{label}</p>
+                  <p className="label-caps max-w-[13rem] text-[10px] tracking-[0.18em] text-white/50">{label}</p>
                 </div>
               </div>
             ))}

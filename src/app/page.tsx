@@ -350,13 +350,20 @@ export default function Home() {
               Amoohaa Farms is built as a harvest-to-market business, so each product line can serve its own customer while staying connected to a trusted farm-led standard.
             </p>
           </div>
-          <div className="grid grid-cols-3 border border-[var(--line)] bg-[var(--paper)]">
+          <div className="grid grid-cols-1 border border-[var(--line)] bg-[var(--paper)] sm:grid-cols-3">
             {numbers.map(([value, label], i) => (
-              <div key={label} className={`flex flex-col justify-between p-8 ${i < 2 ? "border-r border-[var(--line)]" : ""}`}>
-                <p className="display-serif text-5xl font-normal text-[var(--leaf-dark)] leading-none sm:text-6xl">{value}</p>
+              <div
+                key={label}
+                className={`flex min-h-36 flex-col justify-between gap-8 p-6 sm:min-h-52 sm:p-8 ${
+                  i < 2
+                    ? "border-b border-[var(--line)] sm:border-b-0 sm:border-r"
+                    : ""
+                }`}
+              >
+                <p className="display-serif text-4xl font-normal leading-none text-[var(--leaf-dark)] sm:text-5xl lg:text-6xl">{value}</p>
                 <div>
                   <div className="mb-3 h-px w-8 bg-[var(--wheat)]/60" />
-                  <p className="label-caps text-[10px] tracking-[0.18em] text-[var(--stone)]">{label}</p>
+                  <p className="label-caps max-w-[14rem] text-[10px] tracking-[0.18em] text-[var(--stone)]">{label}</p>
                 </div>
               </div>
             ))}
