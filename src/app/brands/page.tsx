@@ -12,7 +12,7 @@ import Link from "next/link";
 import { ArrowRight, Hourglass, Leaf, Wheat } from "lucide-react";
 
 const tags = ["Nutrition First", "Agro Sourced", "Plant Protein"];
-
+   
 const brandImage =
   "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80";
 
