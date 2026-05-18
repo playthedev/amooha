@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fbf6e8;
+  --foreground: #163826;
+  --cream: #fbf6e8;
+  --cream-deep: #f1e4c6;
+  --leaf: #0c793d;
+  --leaf-dark: #0a4d2c;
+  --leaf-soft: #dbe9c4;
+  --wheat: #dca328;
+  --wheat-deep: #b8790d;
+  --ink: #163826;
+  --stone: #6d705f;
+  --paper: #fffdf5;
+  --line: rgba(18, 54, 37, 0.13);
+  --forest-wash: #e6edd1;
 }
 
 @theme inline {
@@ -12,15 +24,80 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--wheat);
+  color: var(--leaf-dark);
+}
+
+.display-serif {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.label-caps {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.grain-layer {
+  position: relative;
+}
+
+.grain-layer::after {
+  background-image: radial-gradient(rgba(22, 56, 38, 0.12) 0.6px, transparent 0.6px);
+  background-size: 5px 5px;
+  content: "";
+  inset: 0;
+  opacity: 0.18;
+  pointer-events: none;
+  position: absolute;
+}
+
+.marquee-track {
+  animation: scroll-left 34s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.section-shell {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .section-shell {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-shell {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
 }

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-labelledby="title desc">
+  <title id="title">Power Pulz logo</title>
+  <desc id="desc">Power Pulz wordmark with a pulse-shaped sprout mark.</desc>
+  <rect width="360" height="120" rx="0" fill="#fffdf5"/>
+  <g transform="translate(24 22)">
+    <circle cx="38" cy="38" r="38" fill="#0a4d2c"/>
+    <path d="M18 44h20l7-18 13 34 8-16h14" fill="none" stroke="#dca328" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M47 22c9-10 22-10 30-4-1 13-11 24-25 25-2-8-4-14-5-21Z" fill="#dbe9c4"/>
+    <path d="M45 43c-4-12-12-20-24-24" fill="none" stroke="#fffdf5" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <g fill="#0a4d2c">
+    <text x="116" y="54" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="900" letter-spacing="2">POWER</text>
+    <text x="116" y="88" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="900" letter-spacing="2">PULZ</text>
+  </g>
+  <path d="M285 33h38l-17 22h26l-45 42 13-29h-25Z" fill="#dca328"/>
+</svg>
