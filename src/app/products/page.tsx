@@ -1,6 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 import Link from "next/link";
 import { ArrowRight, BadgeCheck, Leaf, PackageCheck, Wheat } from "lucide-react";
 
@@ -57,8 +64,8 @@ const badges = [
   { Icon: BadgeCheck, label: "Quality Checked" },
 ];
 
-function useInView(threshold = 0.12) {
-  const ref = useRef(null);
+function useInView(threshold = 0.12): [RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -71,7 +78,15 @@ function useInView(threshold = 0.12) {
   return [ref, visible];
 }
 
-function FadeIn({ children, delay = 0, style = {} }) {
+function FadeIn({
+  children,
+  delay = 0,
+  style = {},
+}: {
+  children: ReactNode;
+  delay?: number;
+  style?: CSSProperties;
+}) {
   const [ref, visible] = useInView();
   return (
     <div

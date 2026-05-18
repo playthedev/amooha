@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  type RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import { ArrowRight, Hourglass, Leaf, Wheat } from "lucide-react";
 
@@ -9,8 +16,8 @@ const tags = ["Nutrition First", "Agro Sourced", "Plant Protein"];
 const brandImage =
   "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1400&q=80";
 
-function useInView(threshold = 0.12) {
-  const ref = useRef(null);
+function useInView(threshold = 0.12): [RefObject<HTMLDivElement | null>, boolean] {
+  const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
     const obs = new IntersectionObserver(
@@ -23,7 +30,15 @@ function useInView(threshold = 0.12) {
   return [ref, visible];
 }
 
-function FadeIn({ children, delay = 0, style = {} }) {
+function FadeIn({
+  children,
+  delay = 0,
+  style = {},
+}: {
+  children: ReactNode;
+  delay?: number;
+  style?: CSSProperties;
+}) {
   const [ref, visible] = useInView();
   return (
     <div ref={ref} style={{
