@@ -1,0 +1,260 @@
+{
+  "nav": {
+    "ourStory": "Our Story",
+    "products": "Products",
+    "brands": "Brands",
+    "sustainability": "Sustainability",
+    "contact": "Contact",
+    "enquire": "Enquire",
+    "tagline": "Farm-led sourcing, nutrition and trade",
+    "taglineMobile": "Agro Business",
+    "cart": "Cart"
+  },
+  "footer": {
+    "description": "A farm-based business rooted in honest cultivation, nutrition, and trade.",
+    "business": "Business",
+    "about": "About",
+    "policies": "Policies",
+    "connect": "Connect",
+    "links": {
+      "products": "Products",
+      "brands": "Brands",
+      "contact": "Contact",
+      "introduction": "Our Story",
+      "sustainability": "Sustainability",
+      "privacy": "Privacy Policy",
+      "terms": "Terms & Conditions",
+      "returns": "Returns & Refunds"
+    },
+    "rights": "All rights reserved."
+  },
+  "home": {
+    "heroStories": [
+      {
+        "kicker": "Amoohaa Stories",
+        "title": "Rooted In The Earth. Built For The Future.",
+        "body": "A farm-based business connecting honest cultivation with modern food and nutrition products."
+      },
+      {
+        "kicker": "The Ecosystem",
+        "title": "Brands Born From The Farm",
+        "body": "Power Pulz and HarvestVita — two farm-born brands redefining nutrition and wellness."
+      }
+    ],
+    "news": {
+      "label": "Latest",
+      "cards": [
+        {
+          "label": "Company Update",
+          "title": "Amoohaa Farms strengthens its harvest-to-market platform",
+          "body": "A unified digital home for sourcing, farm products, Power Pulz, and partnerships."
+        },
+        {
+          "label": "Brand Story",
+          "title": "Power Pulz becomes the flagship nutrition label",
+          "body": "A focused product experience connected to farm-origin ingredient standards."
+        },
+        {
+          "label": "Sourcing",
+          "title": "Building a clearer farm-to-brand journey",
+          "body": "Traceable thinking across ingredients, supplier relationships, and product quality."
+        }
+      ]
+    },
+    "numbers": {
+      "label": "Impact",
+      "items": [
+        { "value": "6+", "label": "States Sourced" },
+        { "value": "2", "label": "Farm Brands" },
+        { "value": "100%", "label": "Traceable Harvest" },
+        { "value": "B2B", "label": "Trade Ready" }
+      ]
+    },
+    "journey": {
+      "label": "The Journey",
+      "title": "From Soil to Shelf",
+      "steps": [
+        {
+          "num": "01",
+          "title": "Farmer Relationships",
+          "body": "We work directly with growers across India's finest agricultural belts."
+        },
+        {
+          "num": "02",
+          "title": "Quality Curation",
+          "body": "Every harvest is selected for nutrition density, freshness, and purity."
+        },
+        {
+          "num": "03",
+          "title": "Brand Building",
+          "body": "Farm-origin ingredients become trusted consumer and B2B products."
+        },
+        {
+          "num": "04",
+          "title": "Market Reach",
+          "body": "Power Pulz and HarvestVita carry the story to shelves and platforms."
+        }
+      ]
+    },
+    "community": {
+      "label": "Community",
+      "title": "Built on Trust. Grown with Care.",
+      "body": "Amoohaa Farms is not just a business — it is a commitment to farmers, to quality, and to the communities that grow our food.",
+      "cta": "Learn Our Story"
+    },
+    "testimonials": {
+      "label": "Voices",
+      "items": [
+        {
+          "quote": "The quality of Amoohaa's makhana is unlike anything we've sourced before. Consistent, clean, and traceably farmed.",
+          "name": "Rajesh M.",
+          "role": "Food Manufacturer, Pune"
+        },
+        {
+          "quote": "Power Pulz chia seeds have become a staple in our smoothie range. The omega-3 profile is exceptional.",
+          "name": "Priya S.",
+          "role": "Health Brand Founder, Mumbai"
+        },
+        {
+          "quote": "Working with Amoohaa for B2B sourcing has been seamless. They understand what premium ingredients mean.",
+          "name": "Arjun K.",
+          "role": "Procurement Head, Bangalore"
+        }
+      ]
+    },
+    "brands": {
+      "label": "Our Brands",
+      "title": "Two Brands. One Farm Philosophy.",
+      "items": [
+        {
+          "name": "Power Pulz",
+          "desc": "Nutrition-forward seeds and superfoods for the modern health consumer.",
+          "cta": "Visit Power Pulz"
+        },
+        {
+          "name": "HarvestVita",
+          "desc": "Premium farm-origin ingredients for food manufacturers and B2B trade.",
+          "cta": "Explore HarvestVita"
+        }
+      ]
+    },
+    "categories": {
+      "label": "Categories",
+      "title": "Shop by Category",
+      "items": [
+        { "label": "Seeds" },
+        { "label": "Nuts" },
+        { "label": "Grains" },
+        { "label": "Superfoods" }
+      ],
+      "cta": "View All Products"
+    }
+  },
+  "products": {
+    "title": "Our Products",
+    "subtitle": "Farm-origin ingredients. Honest sourcing. Consistent quality.",
+    "filters": ["All", "Seeds", "Nuts", "Grains", "Superfoods"],
+    "addToCart": "Add to Cart",
+    "viewDetails": "View Details",
+    "badges": {
+      "farmSourced": "Farm Sourced",
+      "b2bReady": "B2B Ready",
+      "qualityChecked": "Quality Checked"
+    },
+    "perPack": "/ pack"
+  },
+  "productDetail": {
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added!",
+    "benefits": "Benefits",
+    "nutrition": "Nutrition Highlights",
+    "relatedProducts": "You May Also Like",
+    "perPack": "/ pack",
+    "brand": "Brand",
+    "source": "Source",
+    "weight": "Weight",
+    "visitBrand": "Visit"
+  },
+  "brands": {
+    "title": "Our Brands",
+    "subtitle": "Two distinct brands, one farm philosophy — honest sourcing, superior nutrition.",
+    "powerpulz": {
+      "name": "Power Pulz",
+      "tagline": "Nutrition-forward seeds and superfoods for the modern health consumer.",
+      "description": "Power Pulz is our consumer nutrition brand, delivering farm-origin seeds and superfoods to health-conscious individuals. Every product carries a traceable farm story and a verified nutrition profile.",
+      "cta": "Visit Power Pulz",
+      "features": ["Premium Seeds", "Superfoods", "Consumer Ready", "FSSAI Tested"]
+    },
+    "harvestvita": {
+      "name": "HarvestVita",
+      "tagline": "Premium farm-origin ingredients for food manufacturers and B2B trade.",
+      "description": "HarvestVita serves the B2B market with premium bulk ingredients sourced directly from Indian farms. Consistent quality, verified documentation, and reliable supply chains.",
+      "cta": "Enquire Now",
+      "features": ["Bulk Supply", "B2B Trade", "Quality Verified", "Pan-India Sourcing"]
+    }
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Partner with us, enquire about products, or learn more about our farm network.",
+    "form": {
+      "name": "Full Name",
+      "email": "Email Address",
+      "company": "Company / Organisation",
+      "message": "Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "successTitle": "Message Sent",
+      "successBody": "Thank you for reaching out. We'll be in touch shortly.",
+      "errorTitle": "Something went wrong",
+      "errorBody": "Please try again or email us directly."
+    }
+  },
+  "cart": {
+    "title": "Your Cart",
+    "empty": "Your cart is empty.",
+    "browseCta": "Browse Products",
+    "remove": "Remove",
+    "subtotal": "Subtotal",
+    "checkout": "Proceed to Checkout",
+    "continueShopping": "Continue Shopping"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "steps": {
+      "details": "Details",
+      "review": "Review",
+      "success": "Done"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone",
+      "address": "Address",
+      "city": "City",
+      "state": "State",
+      "pincode": "Pincode",
+      "country": "Country"
+    },
+    "review": {
+      "orderSummary": "Order Summary",
+      "total": "Total",
+      "placeOrder": "Place Order",
+      "back": "Back"
+    },
+    "success": {
+      "title": "Order Placed!",
+      "body": "Thank you for your order. We'll be in touch shortly.",
+      "cta": "Continue Shopping"
+    }
+  },
+  "language": {
+    "label": "Language",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "currency": {
+    "label": "Currency"
+  }
+}

@@ -33,7 +33,7 @@ const heroStories = [
   {
     kicker: "The Ecosystem",
     title: "Brands Born From The Farm",
-    body: "Power Pulz brings the first high-energy nutrition line from Amoohaa Farms.",
+    body: "Power Pulz and HarvestVita — two farm-born brands redefining nutrition and wellness.",
     image:
       "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1600&q=80",
   },
@@ -58,7 +58,7 @@ const newsCards = [
 ];
 
 const numbers = [
-  ["01", "Flagship nutrition label"],
+  ["02", "Active brand labels"],
   ["04", "Strategic focus areas"],
   ["100%", "Ingredient-led brand standard"],
 ];
@@ -70,6 +70,15 @@ const brandCards = [
     href: "https://power-pulz.vercel.app/",
     image:
       "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1000&q=80",
+    accentColor: "var(--wheat)",
+  },
+  {
+    title: "HarvestVita",
+    label: "Natural Wellness Range",
+    href: "/products",
+    image:
+      "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=1000&q=80",
+    accentColor: "#a8d5a2",
   },
 ];
 
@@ -534,7 +543,7 @@ export default function Home() {
               View all <ArrowRight size={15} />
             </Link>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 sm:grid-cols-2">
             {brandCards.map((brand) => (
               <a
                 key={brand.title}
@@ -547,18 +556,21 @@ export default function Home() {
                   src={brand.image}
                   alt={brand.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 640px) 100vw, 50vw"
                   className="object-cover transition duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,77,44,0.04)_0%,rgba(10,77,44,0.55)_55%,rgba(10,77,44,0.95)_100%)]" />
                 <div className="absolute inset-x-0 bottom-0 flex flex-col p-10">
-                  <div className="flex items-center gap-2 text-[var(--wheat)]">
-                    <span className="h-px w-5 bg-[var(--wheat)]" />
+                  <div className="flex items-center gap-2" style={{ color: brand.accentColor }}>
+                    <span className="h-px w-5" style={{ background: brand.accentColor }} />
                     <p className="label-caps text-[10px] tracking-[0.22em]">{brand.label}</p>
                   </div>
                   <h3 className="display-serif mt-3 text-4xl font-normal">{brand.title}</h3>
-                  <div className="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70 transition group-hover:text-[var(--wheat)]">
-                    <span>Explore</span>
+                  <div
+                    className="mt-6 flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.18em] text-white/70 transition"
+                    style={{ color: undefined }}
+                  >
+                    <span className="group-hover:opacity-100" style={{ transition: "color .3s" }}>Explore</span>
                     <ArrowRight className="transition-transform duration-300 group-hover:translate-x-2" size={15} />
                   </div>
                 </div>

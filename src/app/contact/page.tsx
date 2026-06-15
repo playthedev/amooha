@@ -76,26 +76,76 @@ function FadeIn({
   );
 }
 
-function Field({ label, placeholder }: { label: string; placeholder: string }) {
+function Field({
+  label,
+  placeholder,
+  type = "text",
+  value,
+  onChange,
+  required,
+}: {
+  label: string;
+  placeholder: string;
+  type?: string;
+  value: string;
+  onChange: (v: string) => void;
+  required?: boolean;
+}) {
   const [focused, setFocused] = useState(false);
   return (
     <label className="cp-field">
-      <span className="cp-field-label">{label}</span>
+      <span className="cp-field-label">
+        {label}{required && <span style={{ color: "#c0392b", marginLeft: 2 }}>*</span>}
+      </span>
       <input
+        type={type}
         className={`cp-field-input${focused ? " focused" : ""}`}
         placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        required={required}
       />
     </label>
   );
 }
 
+type FormStatus = "idle" | "sending" | "success" | "error";
+
 export default function ContactPage() {
-  const [heroImg, setHeroImg]     = useState(false);
+  const [heroImg, setHeroImg]       = useState(false);
   const [produceImg, setProduceImg] = useState(false);
-  const [formImg, setFormImg]     = useState(false);
-  const [footerImg, setFooterImg] = useState(false);
+  const [formImg, setFormImg]       = useState(false);
+  const [footerImg, setFooterImg]   = useState(false);
+
+  const [name,        setName]        = useState("");
+  const [company,     setCompany]     = useState("");
+  const [email,       setEmail]       = useState("");
+  const [enquiryType, setEnquiryType] = useState("Raw Products");
+  const [message,     setMessage]     = useState("");
+  const [status,      setStatus]      = useState<FormStatus>("idle");
+  const [errorMsg,    setErrorMsg]    = useState("");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("sending");
+    setErrorMsg("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, company, email, enquiryType, message }),
+      });
+      const data = await res.json() as { error?: string };
+      if (!res.ok) throw new Error(data.error ?? "Something went wrong.");
+      setStatus("success");
+      setName(""); setCompany(""); setEmail(""); setMessage("");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Failed to send. Please try again.");
+    }
+  }
 
   return (
     <>
@@ -787,39 +837,103 @@ export default function ContactPage() {
                 <div className="cp-form-corner" />
                 <div className="cp-form-deco"><Send size={88} /></div>
 
-                <div className="cp-form-grid">
-                  <div className="cp-form-row">
-                    <Field label="Full Name"   placeholder="e.g. Raghav Sharma"       />
-                    <Field label="Company"     placeholder="e.g. Heritage Foods Ltd." />
-                  </div>
-                  <div className="cp-form-row">
-                    <Field label="Email Address" placeholder="name@company.com" />
-                    <div>
-                      <span className="cp-select-label">Enquiry Type</span>
-                      <div className="cp-select-wrap">
-                        <select className="cp-select">
-                          <option>Raw Products</option>
-                          <option>Brand Partnership</option>
-                          <option>B2B Sourcing</option>
-                          <option>Media</option>
-                        </select>
-                      </div>
+                {status === "success" ? (
+                  <div style={{
+                    display: "flex", flexDirection: "column", alignItems: "center",
+                    justifyContent: "center", minHeight: 340, textAlign: "center",
+                    position: "relative", zIndex: 2,
+                  }}>
+                    <div style={{
+                      width: 64, height: 64, borderRadius: "50%", background: "#e8f5e9",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      marginBottom: "1.5rem",
+                    }}>
+                      <svg width="30" height="30" viewBox="0 0 24 24" fill="none"
+                        stroke="#2d6a46" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
                     </div>
-                  </div>
-                  <div>
-                    <span className="cp-textarea-label">Your Message</span>
-                    <textarea
-                      className="cp-textarea"
-                      placeholder="Tell us about your requirements…"
-                    />
-                  </div>
-                  <div>
-                    <button className="cp-submit" type="submit">
-                      Submit Enquiry
-                      <ArrowRight size={15} />
+                    <p style={{
+                      fontFamily: "'Playfair Display', serif", fontSize: "1.6rem",
+                      fontStyle: "italic", color: "#1a4a2e", margin: 0,
+                    }}>Enquiry sent!</p>
+                    <p style={{
+                      fontFamily: "'DM Sans', sans-serif", fontSize: ".92rem",
+                      color: "#5a5550", marginTop: ".75rem", lineHeight: 1.7, maxWidth: 340,
+                    }}>
+                      Thank you for reaching out. Our team will get back to you within 1–2 business days.
+                    </p>
+                    <button
+                      onClick={() => setStatus("idle")}
+                      className="cp-submit"
+                      style={{ marginTop: "2rem" }}
+                    >
+                      Send Another Enquiry
                     </button>
                   </div>
-                </div>
+                ) : (
+                  <form onSubmit={handleSubmit} noValidate>
+                    <div className="cp-form-grid">
+                      <div className="cp-form-row">
+                        <Field label="Full Name" placeholder="e.g. Raghav Sharma"
+                          value={name} onChange={setName} required />
+                        <Field label="Company" placeholder="e.g. Heritage Foods Ltd."
+                          value={company} onChange={setCompany} />
+                      </div>
+                      <div className="cp-form-row">
+                        <Field label="Email Address" placeholder="name@company.com"
+                          type="email" value={email} onChange={setEmail} required />
+                        <div>
+                          <span className="cp-select-label">Enquiry Type</span>
+                          <div className="cp-select-wrap">
+                            <select
+                              className="cp-select"
+                              value={enquiryType}
+                              onChange={(e) => setEnquiryType(e.target.value)}
+                            >
+                              <option>Raw Products</option>
+                              <option>Brand Partnership</option>
+                              <option>B2B Sourcing</option>
+                              <option>Media</option>
+                              <option>Other</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="cp-textarea-label">
+                          Your Message<span style={{ color: "#c0392b", marginLeft: 2 }}>*</span>
+                        </span>
+                        <textarea
+                          className="cp-textarea"
+                          placeholder="Tell us about your requirements…"
+                          value={message}
+                          onChange={(e) => setMessage(e.target.value)}
+                          required
+                        />
+                      </div>
+                      {status === "error" && (
+                        <p style={{
+                          fontFamily: "'DM Sans', sans-serif", fontSize: ".82rem",
+                          color: "#c0392b", marginTop: "-.5rem",
+                        }}>
+                          {errorMsg}
+                        </p>
+                      )}
+                      <div>
+                        <button
+                          className="cp-submit"
+                          type="submit"
+                          disabled={status === "sending"}
+                          style={{ opacity: status === "sending" ? 0.65 : 1, cursor: status === "sending" ? "not-allowed" : "pointer" }}
+                        >
+                          {status === "sending" ? "Sending…" : "Submit Enquiry"}
+                          {status !== "sending" && <ArrowRight size={15} />}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                )}
               </div>
 
             </div>

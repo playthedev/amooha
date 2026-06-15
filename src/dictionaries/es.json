@@ -1,0 +1,260 @@
+{
+  "nav": {
+    "ourStory": "Nuestra Historia",
+    "products": "Productos",
+    "brands": "Marcas",
+    "sustainability": "Sostenibilidad",
+    "contact": "Contacto",
+    "enquire": "Consultar",
+    "tagline": "Abastecimiento agrícola, nutrición y comercio",
+    "taglineMobile": "Agro Negocio",
+    "cart": "Carrito"
+  },
+  "footer": {
+    "description": "Un negocio agrícola arraigado en el cultivo honesto, la nutrición y el comercio.",
+    "business": "Negocio",
+    "about": "Acerca de",
+    "policies": "Políticas",
+    "connect": "Conectar",
+    "links": {
+      "products": "Productos",
+      "brands": "Marcas",
+      "contact": "Contacto",
+      "introduction": "Nuestra Historia",
+      "sustainability": "Sostenibilidad",
+      "privacy": "Política de privacidad",
+      "terms": "Términos y condiciones",
+      "returns": "Devoluciones y reembolsos"
+    },
+    "rights": "Todos los derechos reservados."
+  },
+  "home": {
+    "heroStories": [
+      {
+        "kicker": "Historias Amoohaa",
+        "title": "Arraigado en la Tierra. Construido para el Futuro.",
+        "body": "Un negocio agrícola que conecta el cultivo honesto con productos alimenticios y nutricionales modernos."
+      },
+      {
+        "kicker": "El Ecosistema",
+        "title": "Marcas Nacidas de la Granja",
+        "body": "Power Pulz y HarvestVita — dos marcas agrícolas redefiniendo la nutrición y el bienestar."
+      }
+    ],
+    "news": {
+      "label": "Novedades",
+      "cards": [
+        {
+          "label": "Actualización",
+          "title": "Amoohaa Farms fortalece su plataforma de cosecha",
+          "body": "Un hogar digital unificado para abastecimiento, productos agrícolas, Power Pulz y asociaciones."
+        },
+        {
+          "label": "Historia de marca",
+          "title": "Power Pulz se convierte en la etiqueta de nutrición insignia",
+          "body": "Una experiencia de producto centrada en los estándares de ingredientes de origen agrícola."
+        },
+        {
+          "label": "Abastecimiento",
+          "title": "Construyendo un camino más claro de la granja a la marca",
+          "body": "Trazabilidad de ingredientes, relaciones con proveedores y calidad del producto."
+        }
+      ]
+    },
+    "numbers": {
+      "label": "Impacto",
+      "items": [
+        { "value": "6+", "label": "Estados abastecidos" },
+        { "value": "2", "label": "Marcas agrícolas" },
+        { "value": "100%", "label": "Cosecha trazable" },
+        { "value": "B2B", "label": "Comercio listo" }
+      ]
+    },
+    "journey": {
+      "label": "El Camino",
+      "title": "Del Suelo al Estante",
+      "steps": [
+        {
+          "num": "01",
+          "title": "Relaciones con agricultores",
+          "body": "Trabajamos directamente con cultivadores en los mejores cinturones agrícolas de India."
+        },
+        {
+          "num": "02",
+          "title": "Selección de calidad",
+          "body": "Cada cosecha se selecciona por su densidad nutricional, frescura y pureza."
+        },
+        {
+          "num": "03",
+          "title": "Desarrollo de marca",
+          "body": "Los ingredientes de origen agrícola se convierten en productos de confianza para consumidores y B2B."
+        },
+        {
+          "num": "04",
+          "title": "Alcance de mercado",
+          "body": "Power Pulz y HarvestVita llevan la historia a los estantes y plataformas."
+        }
+      ]
+    },
+    "community": {
+      "label": "Comunidad",
+      "title": "Construido sobre la confianza. Cultivado con cuidado.",
+      "body": "Amoohaa Farms no es solo un negocio — es un compromiso con los agricultores, la calidad y las comunidades que cultivan nuestra comida.",
+      "cta": "Conocer nuestra historia"
+    },
+    "testimonials": {
+      "label": "Testimonios",
+      "items": [
+        {
+          "quote": "La calidad del makhana de Amoohaa es incomparable. Consistente, limpio y cultivado de forma trazable.",
+          "name": "Rajesh M.",
+          "role": "Fabricante de alimentos, Pune"
+        },
+        {
+          "quote": "Las semillas de chía Power Pulz se han convertido en un elemento básico en nuestra línea de batidos. El perfil de omega-3 es excepcional.",
+          "name": "Priya S.",
+          "role": "Fundadora de marca de salud, Mumbai"
+        },
+        {
+          "quote": "Trabajar con Amoohaa para el abastecimiento B2B ha sido fluido. Entienden lo que significan los ingredientes premium.",
+          "name": "Arjun K.",
+          "role": "Jefe de compras, Bangalore"
+        }
+      ]
+    },
+    "brands": {
+      "label": "Nuestras Marcas",
+      "title": "Dos Marcas. Una Filosofía Agrícola.",
+      "items": [
+        {
+          "name": "Power Pulz",
+          "desc": "Semillas y superalimentos orientados a la nutrición para el consumidor de salud moderno.",
+          "cta": "Visitar Power Pulz"
+        },
+        {
+          "name": "HarvestVita",
+          "desc": "Ingredientes premium de origen agrícola para fabricantes de alimentos y comercio B2B.",
+          "cta": "Explorar HarvestVita"
+        }
+      ]
+    },
+    "categories": {
+      "label": "Categorías",
+      "title": "Comprar por categoría",
+      "items": [
+        { "label": "Semillas" },
+        { "label": "Nueces" },
+        { "label": "Granos" },
+        { "label": "Superalimentos" }
+      ],
+      "cta": "Ver todos los productos"
+    }
+  },
+  "products": {
+    "title": "Nuestros Productos",
+    "subtitle": "Ingredientes de origen agrícola. Abastecimiento honesto. Calidad constante.",
+    "filters": ["Todos", "Semillas", "Nueces", "Granos", "Superalimentos"],
+    "addToCart": "Añadir al carrito",
+    "viewDetails": "Ver detalles",
+    "badges": {
+      "farmSourced": "Origen agrícola",
+      "b2bReady": "Listo B2B",
+      "qualityChecked": "Calidad verificada"
+    },
+    "perPack": "/ unidad"
+  },
+  "productDetail": {
+    "addToCart": "Añadir al carrito",
+    "addedToCart": "¡Añadido!",
+    "benefits": "Beneficios",
+    "nutrition": "Aspectos nutricionales",
+    "relatedProducts": "También te puede gustar",
+    "perPack": "/ unidad",
+    "brand": "Marca",
+    "source": "Origen",
+    "weight": "Peso",
+    "visitBrand": "Visitar"
+  },
+  "brands": {
+    "title": "Nuestras Marcas",
+    "subtitle": "Dos marcas distintas, una filosofía agrícola — abastecimiento honesto, nutrición superior.",
+    "powerpulz": {
+      "name": "Power Pulz",
+      "tagline": "Semillas y superalimentos orientados a la nutrición para el consumidor de salud moderno.",
+      "description": "Power Pulz es nuestra marca de nutrición para el consumidor, ofreciendo semillas y superalimentos de origen agrícola a personas conscientes de su salud.",
+      "cta": "Visitar Power Pulz",
+      "features": ["Semillas premium", "Superalimentos", "Listo para el consumidor", "Probado FSSAI"]
+    },
+    "harvestvita": {
+      "name": "HarvestVita",
+      "tagline": "Ingredientes premium de origen agrícola para fabricantes de alimentos y comercio B2B.",
+      "description": "HarvestVita sirve al mercado B2B con ingredientes a granel premium abastecidos directamente de granjas indias.",
+      "cta": "Consultar ahora",
+      "features": ["Suministro a granel", "Comercio B2B", "Calidad verificada", "Abastecimiento pan-India"]
+    }
+  },
+  "contact": {
+    "title": "Ponte en Contacto",
+    "subtitle": "Asóciate con nosotros, consulta sobre productos o conoce más sobre nuestra red agrícola.",
+    "form": {
+      "name": "Nombre completo",
+      "email": "Correo electrónico",
+      "company": "Empresa / Organización",
+      "message": "Mensaje",
+      "submit": "Enviar mensaje",
+      "sending": "Enviando...",
+      "successTitle": "Mensaje enviado",
+      "successBody": "Gracias por contactarnos. Nos comunicaremos contigo en breve.",
+      "errorTitle": "Algo salió mal",
+      "errorBody": "Por favor inténtalo de nuevo o envíanos un correo directamente."
+    }
+  },
+  "cart": {
+    "title": "Tu Carrito",
+    "empty": "Tu carrito está vacío.",
+    "browseCta": "Explorar productos",
+    "remove": "Eliminar",
+    "subtotal": "Subtotal",
+    "checkout": "Proceder al pago",
+    "continueShopping": "Continuar comprando"
+  },
+  "checkout": {
+    "title": "Pago",
+    "steps": {
+      "details": "Detalles",
+      "review": "Revisión",
+      "success": "Listo"
+    },
+    "form": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "city": "Ciudad",
+      "state": "Estado",
+      "pincode": "Código postal",
+      "country": "País"
+    },
+    "review": {
+      "orderSummary": "Resumen del pedido",
+      "total": "Total",
+      "placeOrder": "Realizar pedido",
+      "back": "Atrás"
+    },
+    "success": {
+      "title": "¡Pedido realizado!",
+      "body": "Gracias por tu pedido. Nos pondremos en contacto contigo en breve.",
+      "cta": "Continuar comprando"
+    }
+  },
+  "language": {
+    "label": "Idioma",
+    "en": "English",
+    "fr": "Français",
+    "es": "Español"
+  },
+  "currency": {
+    "label": "Moneda"
+  }
+}
