@@ -7,47 +7,10 @@ import {
   useRef,
   useState,
 } from "react";
+import { useT } from "@/i18n/language-provider";
 
-const values = [
-  {
-    title: "Purity",
-    icon: "✦",
-    body: "Zero-compromise standards for ingredient integrity, crop quality, and consumer confidence.",
-  },
-  {
-    title: "Traceability",
-    icon: "◈",
-    body: "A clear farm-to-brand story that makes sourcing easier to explain and easier to trust.",
-  },
-  {
-    title: "Farmer Welfare",
-    icon: "❋",
-    body: "Partnerships designed around fairness, continuity, and sustainable agricultural progress.",
-  },
-];
-
-const timeline = [
-  {
-    year: "2018",
-    title: "Founding Roots",
-    body: "The first farm partnerships shaped the blueprint for Amoohaa Farms.",
-  },
-  {
-    year: "2022",
-    title: "Power Pulz Launch",
-    body: "The flagship nutrition label created a dedicated product experience.",
-  },
-  {
-    year: "2024",
-    title: "Farm Business Growth",
-    body: "The company began expanding its harvest, sourcing, and food lines.",
-  },
-  {
-    year: "2026",
-    title: "Future Growth",
-    body: "Amoohaa Farms continues building a connected farm-to-brand ecosystem.",
-  },
-];
+// Decorative icons stay constant across locales.
+const valueIcons = ["✦", "◈", "❋"];
 
 function useInView(threshold = 0.15): [RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -91,11 +54,12 @@ function FadeIn({
 }
 
 export default function IntroductionPage() {
+  const tr = useT().introduction;
   const [heroLoaded, setHeroLoaded] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => setHeroLoaded(true), 80);
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setHeroLoaded(true), 80);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
@@ -579,15 +543,15 @@ export default function IntroductionPage() {
           <div className="ip-hero-overlay" />
           <div className="ip-hero-grain" />
           <div className="ip-hero-content">
-            <span className="ip-eyebrow">Heritage &amp; Precision</span>
+            <span className="ip-eyebrow">{tr.hero.eyebrow}</span>
             <h1 className="ip-hero-title">
-              From the soil,<br /><em>with purpose.</em>
+              {tr.hero.titleLine1}<br /><em>{tr.hero.titleEm}</em>
             </h1>
             <p className="ip-hero-sub">
-              Building trust between the farm and the table through transparency and care.
+              {tr.hero.sub}
             </p>
             <div className="ip-scroll-hint">
-              <span>Scroll</span>
+              <span>{tr.hero.scroll}</span>
               <div className="ip-scroll-line" />
             </div>
           </div>
@@ -597,10 +561,10 @@ export default function IntroductionPage() {
         <FadeIn>
           <div className="ip-stat-bar">
             <div className="ip-stat-grid">
-              {[["2018","Est. Year"],["50+","Farm Partners"],["3","Product Lines"],["100%","Traceable"]].map(([n,l]) => (
-                <div key={l}>
-                  <span className="ip-stat-num">{n}</span>
-                  <span className="ip-stat-label">{l}</span>
+              {tr.stats.map(({ value, label }) => (
+                <div key={label}>
+                  <span className="ip-stat-num">{value}</span>
+                  <span className="ip-stat-label">{label}</span>
                 </div>
               ))}
             </div>
@@ -611,16 +575,16 @@ export default function IntroductionPage() {
         <section className="ip-section ip-values-bg">
           <FadeIn>
             <div className="ip-values-header">
-              <span className="ip-section-label">What we stand for</span>
-              <h2 className="ip-section-heading">Our Core Values</h2>
+              <span className="ip-section-label">{tr.values.label}</span>
+              <h2 className="ip-section-heading">{tr.values.heading}</h2>
             </div>
           </FadeIn>
           <div className="ip-values-grid">
-            {values.map((v, i) => (
+            {tr.values.items.map((v, i) => (
               <FadeIn key={v.title} delay={i * 0.12}>
                 <article className="ip-value-card">
                   <span className="ip-value-num">{String(i + 1).padStart(2, "0")}</span>
-                  <span className="ip-value-icon">{v.icon}</span>
+                  <span className="ip-value-icon">{valueIcons[i]}</span>
                   <span className="ip-value-title">{v.title}</span>
                   <p className="ip-value-body">{v.body}</p>
                 </article>
@@ -633,13 +597,13 @@ export default function IntroductionPage() {
         <section className="ip-section ip-timeline-bg">
           <FadeIn>
             <div className="ip-timeline-header">
-              <span className="ip-section-label">Our journey</span>
-              <h2 className="ip-section-heading">Our Evolution</h2>
+              <span className="ip-section-label">{tr.timeline.label}</span>
+              <h2 className="ip-section-heading">{tr.timeline.heading}</h2>
             </div>
           </FadeIn>
           <div className="ip-timeline-track">
             <div className="ip-timeline-spine" />
-            {timeline.map((item, i) => (
+            {tr.timeline.items.map((item, i) => (
               <FadeIn key={item.year} delay={i * 0.1}>
                 <article className="ip-tl-item">
                   <div className="ip-tl-content">
@@ -672,24 +636,18 @@ export default function IntroductionPage() {
             </FadeIn>
             <FadeIn delay={0.18}>
               <div>
-                <span className="ip-quote-label">A word from the founder</span>
+                <span className="ip-quote-label">{tr.quote.label}</span>
                 <span className="ip-quote-deco">"</span>
                 <blockquote className="ip-blockquote">
-                  <p>
-                    We don't just grow food; we nurture a legacy of health and
-                    trust. Every seed planted is a promise kept to the next generation.
-                  </p>
+                  <p>{tr.quote.text}</p>
                 </blockquote>
                 <div className="ip-quote-divider" />
                 <p className="ip-quote-body">
-                  Amoohaa Farms was born from a simple realization: the gap between
-                  the soil and the plate had grown too wide. The business exists to
-                  close that gap through clarity, care, and disciplined product
-                  development.
+                  {tr.quote.body}
                 </p>
                 <div className="ip-quote-attr">
                   <div className="ip-attr-line" />
-                  <span className="ip-attr-name">Founder, Amoohaa Farms</span>
+                  <span className="ip-attr-name">{tr.quote.attribution}</span>
                 </div>
               </div>
             </FadeIn>

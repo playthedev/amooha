@@ -20,25 +20,18 @@ import {
   Send,
   Sprout,
 } from "lucide-react";
+import { useT } from "@/i18n/language-provider";
 
 const estateImage =
   "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80";
 const produceImage =
   "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80";
 
-const details = [
-  { label: "Email Us",         value: "partnerships@amoohaa.com",    Icon: Mail    },
-  { label: "Call Us",          value: "+91 (562) 285-0044",          Icon: Phone   },
-  { label: "Visit The Estate", value: "Agra-Mathura Highway, Agra",  Icon: MapPin  },
-];
-
-const enquiryTypes = [
-  { label: "Raw Products",      Icon: Sprout           },
-  { label: "Brand Partnership", Icon: BriefcaseBusiness },
-  { label: "B2B Sourcing",      Icon: Building2        },
-];
-
-const formItems = ["Premium produce", "White-label sourcing", "Retail distribution"];
+// Static (non-text) data — icons and contact values that don't translate.
+const detailIcons = [Mail, Phone, MapPin];
+const enquiryIcons = [Sprout, BriefcaseBusiness, Building2];
+const CONTACT_EMAIL = "letsconnect@amoohaafarms.com";
+const CONTACT_PHONE = "+91 (562) 285-0044";
 
 function useInView(threshold = 0.1): [RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -114,7 +107,8 @@ function Field({
 type FormStatus = "idle" | "sending" | "success" | "error";
 
 export default function ContactPage() {
-  const [heroImg, setHeroImg]       = useState(false);
+  const tc = useT().contact;
+  const [heroImg, setHeroImg]     = useState(false);
   const [produceImg, setProduceImg] = useState(false);
   const [formImg, setFormImg]       = useState(false);
   const [footerImg, setFooterImg]   = useState(false);
@@ -730,22 +724,23 @@ export default function ContactPage() {
             {/* left */}
             <FadeIn>
               <div>
-                <span className="cp-hero-eyebrow">Established Excellence</span>
+                <span className="cp-hero-eyebrow">{tc.hero.eyebrow}</span>
                 <h1 className="cp-hero-title">
-                  Start a refined<br /><em>farm-to-brand</em><br />conversation.
+                  {tc.hero.titleLine1}<br /><em>{tc.hero.titleEm}</em><br />{tc.hero.titleLine2}
                 </h1>
                 <p className="cp-hero-sub">
-                  For premium sourcing, product partnerships, B2B trade, and
-                  agriculture collaborations — Amoohaa Farms keeps every enquiry
-                  close to the people who understand the land.
+                  {tc.hero.sub}
                 </p>
                 <div className="cp-enq-grid">
-                  {enquiryTypes.map(({ label, Icon }) => (
+                  {tc.enquiryCards.map((label, i) => {
+                    const Icon = enquiryIcons[i];
+                    return (
                     <div key={label} className="cp-enq-card">
                       <Icon size={22} />
                       <span className="cp-enq-label">{label}</span>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
             </FadeIn>
@@ -762,11 +757,10 @@ export default function ContactPage() {
                   />
                   <div className="cp-produce-overlay" />
                   <div className="cp-produce-text">
-                    <span className="cp-produce-eyebrow">Partnership desk</span>
-                    <h2 className="cp-produce-title">Sourcing, trade &amp; brand growth.</h2>
+                    <span className="cp-produce-eyebrow">{tc.produce.eyebrow}</span>
+                    <h2 className="cp-produce-title">{tc.produce.title}</h2>
                     <p className="cp-produce-sub">
-                      A premium enquiry path for buyers, distributors, partners,
-                      and collaborators.
+                      {tc.produce.sub}
                     </p>
                   </div>
                 </div>
@@ -776,8 +770,8 @@ export default function ContactPage() {
                     <BadgeCheck size={22} />
                   </div>
                   <div>
-                    <span className="cp-float-open">Open</span>
-                    <span className="cp-float-title">Trade enquiries</span>
+                    <span className="cp-float-open">{tc.floatBadge.open}</span>
+                    <span className="cp-float-title">{tc.floatBadge.title}</span>
                   </div>
                 </div>
               </div>
@@ -789,7 +783,13 @@ export default function ContactPage() {
         <FadeIn>
           <section className="cp-details-section">
             <div className="cp-details-grid">
-              {details.map(({ label, value, Icon }) => (
+              {[
+                { label: tc.details.emailLabel, value: CONTACT_EMAIL },
+                { label: tc.details.callLabel, value: CONTACT_PHONE },
+                { label: tc.details.visitLabel, value: tc.details.address },
+              ].map(({ label, value }, i) => {
+                const Icon = detailIcons[i];
+                return (
                 <article key={label} className="cp-detail-card">
                   <div className="cp-detail-icon">
                     <Icon size={22} />
@@ -797,7 +797,8 @@ export default function ContactPage() {
                   <span className="cp-detail-label">{label}</span>
                   <span className="cp-detail-value">{value}</span>
                 </article>
-              ))}
+                );
+              })}
             </div>
           </section>
         </FadeIn>
@@ -818,12 +819,12 @@ export default function ContactPage() {
                 <div className="cp-form-left-overlay" />
 
                 <div className="cp-form-left-top">
-                  <span className="cp-form-left-eyebrow">Contact form</span>
-                  <h2 className="cp-form-left-title">Tell us what you want to build.</h2>
+                  <span className="cp-form-left-eyebrow">{tc.formLeft.eyebrow}</span>
+                  <h2 className="cp-form-left-title">{tc.formLeft.title}</h2>
                 </div>
 
                 <div className="cp-form-left-items">
-                  {formItems.map((item) => (
+                  {tc.formItems.map((item) => (
                     <div key={item} className="cp-form-left-item">
                       <Leaf size={15} />
                       {item}
@@ -951,12 +952,12 @@ export default function ContactPage() {
             />
             <div className="cp-estate-overlay" />
             <div className="cp-estate-content">
-              <span className="cp-estate-eyebrow">Located in the heart of Uttar Pradesh</span>
-              <h2 className="cp-estate-title">The Amoohaa Estate</h2>
+              <span className="cp-estate-eyebrow">{tc.estate.eyebrow}</span>
+              <h2 className="cp-estate-title">{tc.estate.title}</h2>
               <div>
                 <span className="cp-estate-pill">
                   <BadgeCheck size={17} />
-                  Partnership enquiries open
+                  {tc.estate.pill}
                 </span>
               </div>
             </div>

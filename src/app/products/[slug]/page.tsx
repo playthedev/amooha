@@ -1,365 +1,352 @@
 "use client";
 
-import { use, useState } from "react";
+import { useMemo, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { ArrowLeft, ArrowRight, Check, ExternalLink, ShoppingCart } from "lucide-react";
-import { getProductBySlug, products } from "@/lib/products";
-import { useCart } from "@/lib/cart-context";
+import {
+  ArrowLeft,
+  Check,
+  ChevronRight,
+  Leaf,
+  Minus,
+  Plus,
+  ShieldCheck,
+  Star,
+  Truck,
+} from "lucide-react";
+import { useCart } from "@/commerce/cart-provider";
+import { useCatalog, useProduct } from "@/commerce/use-catalog";
+import { useCurrency } from "@/currency/currency-provider";
+import { useT } from "@/i18n/language-provider";
 
-export default function ProductDetailPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = use(params);
-  const product = getProductBySlug(slug);
-  const { addItem } = useCart();
+export default function ProductDetailPage() {
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
-  const [added, setAdded] = useState(false);
+  const product = useProduct(slug);
+  const catalog = useCatalog();
+  const { add, setOpen } = useCart();
+  const { format } = useCurrency();
+  const t = useT();
+  const c = t.commerce;
+
+  const [variantId, setVariantId] = useState<string | null>(null);
+  const [qty, setQty] = useState(1);
+  const [activeImg, setActiveImg] = useState(0);
+
+  const variant = useMemo(() => {
+    if (!product) return undefined;
+    return product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+  }, [product, variantId]);
+
+  const related = useMemo(
+    () =>
+      catalog
+        .filter((p) => p.slug !== slug && p.categoryKey === product?.categoryKey)
+        .slice(0, 3),
+    [catalog, slug, product],
+  );
 
   if (!product) {
     return (
-      <>
-        <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');`}</style>
-        <main style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#faf6ef", fontFamily: "'DM Sans', sans-serif" }}>
-          <div style={{ textAlign: "center" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: "2rem", color: "#1a4a2e", fontStyle: "italic" }}>Product not found.</p>
-            <Link href="/products" style={{ display: "inline-flex", alignItems: "center", gap: 8, marginTop: "1.5rem", fontSize: ".7rem", fontWeight: 700, letterSpacing: ".2em", textTransform: "uppercase", color: "#1a4a2e", textDecoration: "none" }}>
-              <ArrowLeft size={14} /> Back to Products
-            </Link>
-          </div>
-        </main>
-      </>
+      <main
+        className="mx-auto flex min-h-[60vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center"
+        style={{ fontFamily: "'Josefin Sans', sans-serif" }}
+      >
+        <p className="text-2xl font-semibold text-[var(--leaf-dark)]">
+          {c.product.notFound}
+        </p>
+        <Link
+          href="/products"
+          className="bg-[var(--wheat)] px-6 py-3 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--leaf-dark)] transition hover:brightness-105"
+        >
+          {c.product.notFoundCta}
+        </Link>
+      </main>
     );
   }
 
-  // Power Pulz products redirect to external site — show a bridge page
-  const isPowerPulz = product.brand === "powerpulz";
+  const gallery = product.gallery.length ? product.gallery : [product.image];
 
-  function handleAddToCart() {
-    addItem({
-      slug: product!.slug,
-      name: product!.name,
-      price: product!.price,
-      weight: product!.weight,
-      image: product!.image,
+  const addToCart = () => {
+    if (!variant) return;
+    add({
+      slug: product.slug,
+      variantId: variant.id,
+      name: product.name,
+      variantLabel: variant.label,
+      image: product.image,
+      priceInr: variant.priceInr,
+      qty,
     });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2200);
-  }
+  };
 
-  const related = products
-    .filter((p) => p.slug !== product.slug && p.category === product.category)
-    .slice(0, 3);
+  const buyNow = () => {
+    if (!variant) return;
+    add({
+      slug: product.slug,
+      variantId: variant.id,
+      name: product.name,
+      variantLabel: variant.label,
+      image: product.image,
+      priceInr: variant.priceInr,
+      qty,
+    });
+    setOpen(false);
+    router.push("/checkout");
+  };
 
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap');
-
-        .pd-page { background: #faf6ef; min-height: 60vh; box-sizing: border-box; }
-
-        /* breadcrumb */
-        .pd-breadcrumb {
-          padding: 1.25rem 1.5rem;
-          max-width: 1200px; margin: 0 auto;
-          display: flex; align-items: center; gap: .5rem;
-          font-family: 'DM Sans', sans-serif; font-size: .62rem;
-          font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
-          color: #5a5550;
-        }
-        .pd-breadcrumb a { color: #1a4a2e; text-decoration: none; transition: color .2s; }
-        .pd-breadcrumb a:hover { color: #b8893a; }
-        .pd-breadcrumb-sep { opacity: .35; }
-
-        /* main grid */
-        .pd-grid {
-          max-width: 1200px; margin: 0 auto;
-          display: grid; gap: 0;
-          box-sizing: border-box;
-        }
-        @media (min-width: 900px) {
-          .pd-grid { grid-template-columns: 1fr 1fr; min-height: 560px; }
-        }
-
-        /* image */
-        .pd-img-wrap {
-          position: relative; overflow: hidden;
-          aspect-ratio: 1/1; background: #e8e0d0;
-        }
-        @media (min-width: 900px) { .pd-img-wrap { aspect-ratio: auto; } }
-        .pd-img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s ease; }
-        .pd-img-wrap:hover .pd-img { transform: scale(1.04); }
-
-        .pd-brand-badge {
-          position: absolute; top: 1.5rem; left: 1.5rem;
-          font-family: 'DM Sans', sans-serif; font-size: .58rem; font-weight: 700;
-          letter-spacing: .2em; text-transform: uppercase;
-          padding: .4rem .9rem; z-index: 2;
-        }
-        .pd-brand-badge.amoohaa { background: #d4a853; color: #1a4a2e; }
-        .pd-brand-badge.powerpulz { background: #1a4a2e; color: #d4a853; border: 1px solid #d4a853; }
-
-        /* detail panel */
-        .pd-detail {
-          padding: 3rem 2rem 4rem;
-          display: flex; flex-direction: column; justify-content: center;
-          background: #faf6ef; box-sizing: border-box;
-        }
-        @media (min-width: 640px) { .pd-detail { padding: 3.5rem 3rem 4.5rem; } }
-        @media (min-width: 1024px) { .pd-detail { padding: 4rem 4.5rem 5rem; } }
-
-        .pd-category {
-          font-family: 'DM Sans', sans-serif; font-size: .6rem; font-weight: 700;
-          letter-spacing: .24em; text-transform: uppercase; color: #b8893a;
-        }
-        .pd-name {
-          font-family: 'Playfair Display', Georgia, serif;
-          font-size: clamp(1.9rem, 4vw, 3rem); font-weight: 400; line-height: 1.12;
-          color: #1a4a2e; margin-top: .5rem;
-        }
-        .pd-source {
-          font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 500;
-          letter-spacing: .16em; text-transform: uppercase; color: #5a5550;
-          margin-top: .6rem;
-        }
-        .pd-rule { width: 48px; height: 2px; background: #d4a853; margin: 1.5rem 0; }
-
-        .pd-desc {
-          font-family: 'DM Sans', sans-serif; font-size: .97rem; font-weight: 300;
-          line-height: 1.85; color: #3d3d36;
-        }
-
-        /* benefits */
-        .pd-benefits { display: flex; flex-direction: column; gap: .55rem; margin-top: 1.75rem; }
-        .pd-benefit {
-          display: flex; align-items: center; gap: .65rem;
-          font-family: 'DM Sans', sans-serif; font-size: .82rem; font-weight: 400; color: #3d3d36;
-        }
-        .pd-benefit svg { color: #2d6a46; flex-shrink: 0; }
-
-        /* nutrition */
-        .pd-nutrition {
-          display: grid; grid-template-columns: repeat(2, 1fr);
-          gap: 1px; background: rgba(26,74,46,.1);
-          margin-top: 2rem; border: 1px solid rgba(26,74,46,.1);
-        }
-        @media (min-width: 480px) { .pd-nutrition { grid-template-columns: repeat(4, 1fr); } }
-        .pd-nut-cell {
-          background: #faf6ef; padding: 1rem .85rem; text-align: center;
-          font-family: 'DM Sans', sans-serif;
-        }
-        .pd-nut-val { font-size: .82rem; font-weight: 700; color: #1a4a2e; }
-        .pd-nut-label { font-size: .55rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #5a5550; margin-top: .3rem; }
-
-        /* pricing & CTA */
-        .pd-pricing-row {
-          display: flex; align-items: center; gap: 1.25rem;
-          margin-top: 2.5rem; flex-wrap: wrap;
-        }
-        .pd-price {
-          font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 500; color: #1a4a2e;
-        }
-        .pd-price-weight {
-          font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 600;
-          letter-spacing: .14em; text-transform: uppercase; color: #5a5550;
-          background: rgba(26,74,46,.07); padding: .35rem .75rem;
-        }
-
-        .pd-cta-row { display: flex; gap: .85rem; margin-top: 1.5rem; flex-wrap: wrap; }
-
-        .pd-btn-cart {
-          display: inline-flex; align-items: center; gap: .6rem;
-          background: #1a4a2e; color: #fff;
-          font-family: 'DM Sans', sans-serif; font-size: .65rem; font-weight: 700;
-          letter-spacing: .2em; text-transform: uppercase;
-          padding: 1rem 2rem; border: none; cursor: pointer;
-          transition: background .22s; flex: 1; justify-content: center;
-        }
-        .pd-btn-cart:hover { background: #0c3320; }
-        .pd-btn-cart.added { background: #2d6a46; }
-
-        .pd-btn-checkout {
-          display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
-          background: #d4a853; color: #1a4a2e;
-          font-family: 'DM Sans', sans-serif; font-size: .65rem; font-weight: 700;
-          letter-spacing: .2em; text-transform: uppercase;
-          padding: 1rem 2rem; border: none; cursor: pointer;
-          transition: background .22s; text-decoration: none; flex: 1;
-        }
-        .pd-btn-checkout:hover { background: #c49540; }
-
-        .pd-pp-banner {
-          margin-top: 1.5rem; padding: 1.25rem 1.5rem;
-          background: #f0ede6; border: 1px solid rgba(26,74,46,.12);
-          display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-          flex-wrap: wrap;
-        }
-        .pd-pp-text {
-          font-family: 'DM Sans', sans-serif; font-size: .8rem; font-weight: 400; color: #3d3d36;
-          line-height: 1.6;
-        }
-        .pd-pp-text strong { color: #1a4a2e; font-weight: 700; }
-        .pd-pp-link {
-          display: inline-flex; align-items: center; gap: .5rem; white-space: nowrap;
-          font-family: 'DM Sans', sans-serif; font-size: .62rem; font-weight: 700;
-          letter-spacing: .18em; text-transform: uppercase; color: #1a4a2e;
-          text-decoration: none; transition: color .2s;
-        }
-        .pd-pp-link:hover { color: #b8893a; }
-
-        /* related */
-        .pd-related-section {
-          background: #f2ede4; padding: 5rem 1.5rem;
-          box-sizing: border-box;
-        }
-        .pd-related-inner { max-width: 1200px; margin: 0 auto; }
-        .pd-related-heading {
-          font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.2rem);
-          font-weight: 400; font-style: italic; color: #1a4a2e; margin-bottom: 2.5rem;
-        }
-        .pd-related-grid {
-          display: grid; gap: 1px; background: rgba(26,74,46,.1);
-        }
-        @media (min-width: 640px) { .pd-related-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 900px) { .pd-related-grid { grid-template-columns: repeat(3, 1fr); } }
-
-        .pd-rel-card {
-          background: #faf6ef; display: flex; flex-direction: column;
-          text-decoration: none; overflow: hidden;
-          transition: box-shadow .28s;
-        }
-        .pd-rel-card:hover { box-shadow: 0 12px 40px rgba(26,74,46,.12); z-index: 1; position: relative; }
-        .pd-rel-img-wrap { aspect-ratio: 4/3; overflow: hidden; flex-shrink: 0; }
-        .pd-rel-img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s; }
-        .pd-rel-card:hover .pd-rel-img { transform: scale(1.06); }
-        .pd-rel-body { padding: 1.5rem 1.5rem 2rem; }
-        .pd-rel-cat { font-family: 'DM Sans', sans-serif; font-size: .58rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: #b8893a; }
-        .pd-rel-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 500; color: #1a4a2e; margin-top: .35rem; line-height: 1.2; }
-        .pd-rel-price { font-family: 'DM Sans', sans-serif; font-size: .75rem; font-weight: 700; color: #1a4a2e; margin-top: .5rem; }
-        .pd-rel-cta { display: flex; align-items: center; gap: 6px; margin-top: 1rem; font-family: 'DM Sans', sans-serif; font-size: .6rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: #1a4a2e; transition: color .2s; }
-        .pd-rel-card:hover .pd-rel-cta { color: #b8893a; }
-        .pd-rel-cta svg { transition: transform .2s; }
-        .pd-rel-card:hover .pd-rel-cta svg { transform: translateX(4px); }
-      `}</style>
-
-      <main className="pd-page">
+    <main
+      className="bg-[#f7f3ec]"
+      style={{ fontFamily: "'Josefin Sans', sans-serif" }}
+    >
+      <div className="mx-auto max-w-6xl px-4 py-8 sm:px-8 sm:py-12">
         {/* Breadcrumb */}
-        <nav className="pd-breadcrumb">
-          <Link href="/products">Products</Link>
-          <span className="pd-breadcrumb-sep">/</span>
-          <span>{product.category}</span>
-          <span className="pd-breadcrumb-sep">/</span>
-          <span style={{ color: "#1a4a2e" }}>{product.name}</span>
+        <nav className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--stone)]">
+          <Link href="/products" className="transition hover:text-[var(--leaf-dark)]">
+            {c.product.breadcrumbProducts}
+          </Link>
+          <ChevronRight size={13} />
+          <span className="text-[var(--leaf-dark)]">{product.name}</span>
         </nav>
 
-        {/* Main product grid */}
-        <div className="pd-grid">
-          {/* Image */}
-          <div className="pd-img-wrap">
-            <img src={product.image} alt={product.name} className="pd-img" />
-            <span className={`pd-brand-badge ${product.brand}`}>
-              {product.brand === "powerpulz" ? "Power Pulz" : "Amoohaa Farms"}
-            </span>
-          </div>
+        <Link
+          href="/products"
+          className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--stone)] transition hover:text-[var(--leaf-dark)]"
+        >
+          <ArrowLeft size={14} />
+          {c.product.back}
+        </Link>
 
-          {/* Details */}
-          <div className="pd-detail">
-            <span className="pd-category">{product.category}</span>
-            <h1 className="pd-name">{product.name}</h1>
-            <p className="pd-source">Sourced from: {product.source}</p>
-            <div className="pd-rule" />
-            <p className="pd-desc">{product.longDesc}</p>
-
-            {/* Benefits */}
-            <div className="pd-benefits">
-              {product.benefits.map((b) => (
-                <div className="pd-benefit" key={b}>
-                  <Check size={14} />
-                  {b}
-                </div>
-              ))}
+        <div className="mt-6 grid gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* Gallery */}
+          <div>
+            <div className="relative aspect-square overflow-hidden rounded-lg bg-white shadow-sm">
+              <Image
+                src={gallery[activeImg]}
+                alt={product.name}
+                fill
+                sizes="(max-width: 1024px) 100vw, 600px"
+                className="object-cover"
+                priority
+              />
+              <span className="absolute left-4 top-4 bg-[var(--wheat)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--leaf-dark)]">
+                {t.products.categories[product.categoryKey]}
+              </span>
             </div>
-
-            {/* Nutrition */}
-            <div className="pd-nutrition">
-              {product.nutritionHighlights.map((n) => (
-                <div className="pd-nut-cell" key={n.label}>
-                  <div className="pd-nut-val">{n.value.split(" /")[0]}</div>
-                  <div className="pd-nut-label">{n.label}</div>
-                </div>
-              ))}
-            </div>
-
-            {/* Price */}
-            <div className="pd-pricing-row">
-              <span className="pd-price">₹{product.price}</span>
-              <span className="pd-price-weight">{product.weight}</span>
-            </div>
-
-            {/* CTA buttons */}
-            <div className="pd-cta-row">
-              <button
-                className={`pd-btn-cart${added ? " added" : ""}`}
-                onClick={handleAddToCart}
-              >
-                {added ? <Check size={15} /> : <ShoppingCart size={15} />}
-                {added ? "Added!" : "Add to Cart"}
-              </button>
-              <Link href="/checkout" className="pd-btn-checkout">
-                Buy Now
-                <ArrowRight size={14} />
-              </Link>
-            </div>
-
-            {/* Power Pulz brand notice */}
-            {isPowerPulz && (
-              <div className="pd-pp-banner">
-                <p className="pd-pp-text">
-                  This product is part of the <strong>Power Pulz</strong> performance
-                  nutrition range by Amoohaa Farms.
-                </p>
-                <a
-                  href={product.powerpulzUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="pd-pp-link"
-                >
-                  Visit Power Pulz
-                  <ExternalLink size={12} />
-                </a>
+            {gallery.length > 1 && (
+              <div className="mt-3 flex gap-3">
+                {gallery.map((src, i) => (
+                  <button
+                    key={src}
+                    onClick={() => setActiveImg(i)}
+                    className={`relative h-20 w-20 overflow-hidden rounded-md border-2 transition ${
+                      i === activeImg
+                        ? "border-[var(--wheat-deep)]"
+                        : "border-transparent opacity-70 hover:opacity-100"
+                    }`}
+                  >
+                    <Image src={src} alt="" fill sizes="80px" className="object-cover" />
+                  </button>
+                ))}
               </div>
             )}
           </div>
+
+          {/* Info */}
+          <div className="flex flex-col">
+            <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--wheat-deep)]">
+              {product.source}
+            </span>
+            <h1 className="mt-2 font-serif text-3xl font-medium leading-tight text-[var(--leaf-dark)] sm:text-4xl">
+              {product.name}
+            </h1>
+
+            {/* Rating */}
+            <div className="mt-3 flex items-center gap-2">
+              <span className="flex">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star
+                    key={n}
+                    size={15}
+                    className={
+                      n <= Math.round(product.rating)
+                        ? "fill-[var(--wheat-deep)] text-[var(--wheat-deep)]"
+                        : "text-[var(--line)]"
+                    }
+                  />
+                ))}
+              </span>
+              <span className="text-[12px] font-semibold text-[var(--ink)]">
+                {product.rating.toFixed(1)}
+              </span>
+              <span className="text-[12px] text-[var(--stone)]">
+                ({product.reviews} {c.product.reviews})
+              </span>
+            </div>
+
+            {/* Price */}
+            <div className="mt-5 flex items-baseline gap-2">
+              <span className="text-3xl font-bold text-[var(--leaf-dark)]">
+                {format(variant!.priceInr)}
+              </span>
+              <span className="text-[12px] uppercase tracking-[0.1em] text-[var(--stone)]">
+                / {variant!.label}
+              </span>
+            </div>
+
+            <p className="mt-2 inline-flex w-fit items-center gap-1.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-[var(--leaf)]">
+              <Check size={14} /> {product.inStock ? c.inStock : c.outOfStock}
+            </p>
+
+            <p className="mt-5 text-[14px] leading-7 text-[var(--stone)]">
+              {product.desc}
+            </p>
+
+            {/* Variant selector */}
+            <div className="mt-6">
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--ink)]">
+                {c.selectSize}
+              </span>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {product.variants.map((v) => {
+                  const active = v.id === variant!.id;
+                  return (
+                    <button
+                      key={v.id}
+                      onClick={() => setVariantId(v.id)}
+                      className={`flex flex-col items-start border px-4 py-2 transition ${
+                        active
+                          ? "border-[var(--leaf-dark)] bg-[var(--leaf-dark)] text-white"
+                          : "border-[var(--line)] text-[var(--ink)] hover:border-[var(--wheat-deep)]"
+                      }`}
+                    >
+                      <span className="text-[13px] font-semibold">{v.label}</span>
+                      <span
+                        className={`text-[11px] ${active ? "text-white/80" : "text-[var(--stone)]"}`}
+                      >
+                        {format(v.priceInr)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Quantity + actions */}
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex items-center border border-[var(--line)]">
+                <button
+                  onClick={() => setQty((q) => Math.max(1, q - 1))}
+                  aria-label="Decrease quantity"
+                  className="flex h-11 w-11 items-center justify-center text-[var(--leaf-dark)] transition hover:bg-[color:rgba(18,54,37,0.06)]"
+                >
+                  <Minus size={15} />
+                </button>
+                <span className="w-12 text-center text-[15px] font-bold text-[var(--ink)]">
+                  {qty}
+                </span>
+                <button
+                  onClick={() => setQty((q) => q + 1)}
+                  aria-label="Increase quantity"
+                  className="flex h-11 w-11 items-center justify-center text-[var(--leaf-dark)] transition hover:bg-[color:rgba(18,54,37,0.06)]"
+                >
+                  <Plus size={15} />
+                </button>
+              </div>
+              <button
+                onClick={addToCart}
+                className="flex h-11 flex-1 items-center justify-center bg-[var(--wheat)] text-[12px] font-bold uppercase tracking-[0.18em] text-[var(--leaf-dark)] transition hover:brightness-105"
+              >
+                {c.addToCart}
+              </button>
+            </div>
+
+            <div className="mt-3 flex flex-col gap-3 sm:flex-row">
+              <button
+                onClick={buyNow}
+                className="flex h-11 flex-1 items-center justify-center bg-[var(--leaf-dark)] text-[12px] font-bold uppercase tracking-[0.18em] text-white transition hover:brightness-110"
+              >
+                {c.buyNow}
+              </button>
+              <Link
+                href="/contact"
+                className="flex h-11 flex-1 items-center justify-center border border-[var(--line)] text-[12px] font-bold uppercase tracking-[0.18em] text-[var(--leaf-dark)] transition hover:border-[var(--wheat-deep)]"
+              >
+                {c.enquire}
+              </Link>
+            </div>
+
+            {/* Trust badges */}
+            <div className="mt-7 grid grid-cols-3 gap-2 border-t border-[var(--line)] pt-6">
+              {[
+                { Icon: Truck, label: c.badges.freeShip },
+                { Icon: ShieldCheck, label: c.badges.secure },
+                { Icon: Leaf, label: c.badges.farm },
+              ].map(({ Icon, label }) => (
+                <div key={label} className="flex flex-col items-center gap-1.5 text-center">
+                  <Icon size={18} className="text-[var(--wheat-deep)]" />
+                  <span className="text-[10px] font-semibold uppercase leading-tight tracking-[0.08em] text-[var(--stone)]">
+                    {label}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Highlights */}
+            <div className="mt-6">
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--ink)]">
+                {c.product.highlights}
+              </span>
+              <ul className="mt-2 flex flex-col gap-1.5">
+                {c.product.highlightItems.map((h) => (
+                  <li key={h} className="flex items-center gap-2 text-[13px] text-[var(--stone)]">
+                    <Check size={14} className="text-[var(--leaf)]" />
+                    {h}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
 
-        {/* Related products */}
+        {/* Related */}
         {related.length > 0 && (
-          <section className="pd-related-section">
-            <div className="pd-related-inner">
-              <h2 className="pd-related-heading">You might also like</h2>
-              <div className="pd-related-grid">
-                {related.map((p) => (
-                  <Link href={`/products/${p.slug}`} className="pd-rel-card" key={p.slug}>
-                    <div className="pd-rel-img-wrap">
-                      <img src={p.image} alt={p.name} className="pd-rel-img" />
-                    </div>
-                    <div className="pd-rel-body">
-                      <span className="pd-rel-cat">{p.category}</span>
-                      <p className="pd-rel-name">{p.name}</p>
-                      <p className="pd-rel-price">₹{p.price} · {p.weight}</p>
-                      <span className="pd-rel-cta">
-                        View Product <ArrowRight size={12} />
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+          <section className="mt-16">
+            <h2 className="font-serif text-2xl font-medium text-[var(--leaf-dark)]">
+              {c.product.related}
+            </h2>
+            <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {related.map((p) => (
+                <Link
+                  key={p.slug}
+                  href={`/products/${p.slug}`}
+                  className="group overflow-hidden rounded-lg bg-white shadow-sm transition hover:shadow-lg"
+                >
+                  <span className="relative block aspect-square overflow-hidden">
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      fill
+                      sizes="(max-width: 640px) 50vw, 280px"
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </span>
+                  <span className="block p-4">
+                    <span className="block text-[14px] font-semibold text-[var(--leaf-dark)]">
+                      {p.name}
+                    </span>
+                    <span className="mt-1 block text-[13px] font-bold text-[var(--wheat-deep)]">
+                      {c.from} {format(Math.min(...p.variants.map((v) => v.priceInr)))}
+                    </span>
+                  </span>
+                </Link>
+              ))}
             </div>
           </section>
         )}
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

@@ -9,17 +9,14 @@ import {
   useRef,
 } from "react";
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, Leaf, PackageCheck, ShoppingCart, Wheat } from "lucide-react";
-import { products } from "@/lib/products";
-import { useCart } from "@/lib/cart-context";
+import { ArrowRight, BadgeCheck, Leaf, PackageCheck, ShoppingBag, Wheat } from "lucide-react";
+import { useT } from "@/i18n/language-provider";
+import { useCatalog } from "@/commerce/use-catalog";
+import { useCurrency } from "@/currency/currency-provider";
+import { useCart } from "@/commerce/cart-provider";
+import { fromPriceInr } from "@/commerce/catalog";
 
-const filters = ["All", "Seeds", "Nuts", "Grains", "Superfoods"];
-
-const badges = [
-  { Icon: Wheat, label: "Farm Sourced" },
-  { Icon: PackageCheck, label: "B2B Ready" },
-  { Icon: BadgeCheck, label: "Quality Checked" },
-];
+const badgeIcons = [Wheat, PackageCheck, BadgeCheck];
 
 function useInView(threshold = 0.12): [RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -60,37 +57,17 @@ function FadeIn({
   );
 }
 
-function AddToCartBtn({ slug, name, price, weight, image }: {
-  slug: string; name: string; price: number; weight: string; image: string;
-}) {
-  const { addItem } = useCart();
-  const [added, setAdded] = useState(false);
-
-  function handleAdd(e: React.MouseEvent) {
-    e.preventDefault();
-    addItem({ slug, name, price, weight, image });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
-  }
-
-  return (
-    <button
-      className={`pp-add-btn${added ? " added" : ""}`}
-      onClick={handleAdd}
-      aria-label={`Add ${name} to cart`}
-    >
-      <ShoppingCart size={13} />
-      {added ? "Added!" : "Add to Cart"}
-    </button>
-  );
-}
-
 export default function ProductsPage() {
-  const [active, setActive] = useState("All");
+  const tp = useT().products;
+  const c = useT().commerce;
+  const { format } = useCurrency();
+  const { add } = useCart();
+  const allProducts = useCatalog();
+  const [active, setActive] = useState("all");
 
-  const visible = active === "All"
-    ? products
-    : products.filter((p) => p.category === active);
+  const visible = active === "all"
+    ? allProducts
+    : allProducts.filter((p) => p.categoryKey === active);
 
   return (
     <>
@@ -233,19 +210,90 @@ export default function ProductsPage() {
           background: none; border: none; cursor: pointer;
           color: #1a4a2e; transition: background .2s, color .2s;
         }
-        .pp-add-btn:hover { background: #1a4a2e; color: #fff; }
-        .pp-add-btn.added { background: #2d6a46; color: #fff; }
+        .pp-card-cta:hover { color: #d4a853; }
+        .pp-card-cta svg { transition: transform .22s; }
+        .pp-card-cta:hover svg { transform: translateX(4px); }
 
-        /* powerpulz card variant */
-        .pp-card-pp-link {
-          display: flex; align-items: center; justify-content: center; gap: .45rem;
-          flex: 1; padding: .75rem .85rem;
-          font-family: 'DM Sans', sans-serif; font-size: .6rem; font-weight: 700;
-          letter-spacing: .18em; text-transform: uppercase;
-          color: #b8893a; text-decoration: none; transition: color .2s;
-          border-left: 1px solid rgba(26,74,46,.1);
+        .pp-card-name-link { text-decoration: none; }
+        .pp-card-price {
+          display: flex;
+          align-items: baseline;
+          gap: .4rem;
+          margin-top: 1rem;
         }
-        .pp-card-pp-link:hover { color: #1a4a2e; }
+        .pp-card-price-from {
+          font-family: 'DM Sans', sans-serif;
+          font-size: .6rem;
+          font-weight: 700;
+          letter-spacing: .16em;
+          text-transform: uppercase;
+          color: #5a5550;
+        }
+        .pp-card-price-val {
+          font-family: 'Playfair Display', Georgia, serif;
+          font-size: 1.4rem;
+          font-weight: 600;
+          color: #1a4a2e;
+        }
+        .pp-card-actions {
+          display: flex;
+          gap: .5rem;
+          margin-top: 1.1rem;
+        }
+        .pp-card-add {
+          flex: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          background: #d4a853;
+          color: #1a4a2e;
+          border: none;
+          cursor: pointer;
+          padding: .8rem 1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: .62rem;
+          font-weight: 700;
+          letter-spacing: .16em;
+          text-transform: uppercase;
+          transition: filter .2s;
+        }
+        .pp-card-add:hover { filter: brightness(1.06); }
+        .pp-card-view {
+          flex: 1;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          border: 1px solid rgba(26,74,46,.18);
+          color: #1a4a2e;
+          text-decoration: none;
+          padding: .8rem 1rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: .62rem;
+          font-weight: 700;
+          letter-spacing: .16em;
+          text-transform: uppercase;
+          transition: border-color .2s, color .2s;
+        }
+        .pp-card-view:hover { border-color: #d4a853; color: #b8893a; }
+        .pp-card-view svg { transition: transform .22s; }
+        .pp-card-view:hover svg { transform: translateX(3px); }
+        .pp-card-enquire {
+          display: block;
+          text-align: center;
+          margin-top: .7rem;
+          font-family: 'DM Sans', sans-serif;
+          font-size: .58rem;
+          font-weight: 700;
+          letter-spacing: .18em;
+          text-transform: uppercase;
+          color: #5a5550;
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          transition: color .2s;
+        }
+        .pp-card-enquire:hover { color: #1a4a2e; }
 
         /* empty state */
         .pp-empty {
@@ -296,21 +344,23 @@ export default function ProductsPage() {
         {/* ── HERO ── */}
         <section className="pp-hero">
           <FadeIn>
-            <span className="pp-hero-eyebrow">Premium Harvest Series</span>
+            <span className="pp-hero-eyebrow">{tp.hero.eyebrow}</span>
             <h1 className="pp-hero-title">
-              Direct from <em>our farms.</em>
+              {tp.hero.titlePre} <em>{tp.hero.titleEm}</em>
             </h1>
             <p className="pp-hero-sub">
-              Honest cultivation, sharp sourcing, and ingredient families designed
-              for premium consumer and B2B product development.
+              {tp.hero.sub}
             </p>
             <div className="pp-badges">
-              {badges.map(({ Icon, label }) => (
+              {tp.badges.map((label, i) => {
+                const Icon = badgeIcons[i];
+                return (
                 <div className="pp-badge" key={label}>
                   <Icon size={16} />
                   {label}
                 </div>
-              ))}
+                );
+              })}
             </div>
           </FadeIn>
         </section>
@@ -318,17 +368,17 @@ export default function ProductsPage() {
         {/* ── FILTER BAR ── */}
         <div className="pp-filter-bar">
           <div className="pp-filter-inner">
-            {filters.map((f) => (
+            {tp.filters.map((f) => (
               <button
-                key={f}
-                className={`pp-filter-btn${active === f ? " active" : ""}`}
-                onClick={() => setActive(f)}
+                key={f.key}
+                className={`pp-filter-btn${active === f.key ? " active" : ""}`}
+                onClick={() => setActive(f.key)}
               >
-                {f}
+                {f.label}
               </button>
             ))}
             <span className="pp-filter-count">
-              {visible.length} product{visible.length !== 1 ? "s" : ""}
+              {visible.length} {visible.length !== 1 ? tp.countOther : tp.countOne}
             </span>
           </div>
         </div>
@@ -337,47 +387,56 @@ export default function ProductsPage() {
         <section className="pp-grid-section">
           <div className="pp-grid">
             {visible.length === 0 && (
-              <div className="pp-empty">No products in this category yet.</div>
+              <div className="pp-empty">{tp.empty}</div>
             )}
             {visible.map((product, i) => (
               <FadeIn key={product.slug} delay={i * 0.07}>
                 <article className="pp-card">
-                  <div className="pp-card-img-wrap">
-                    <Link href={`/products/${product.slug}`} tabIndex={-1} aria-hidden>
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        className="pp-card-img"
-                      />
-                    </Link>
-                    <span className="pp-card-cat">{product.category}</span>
-                    {product.brand === "powerpulz" && (
-                      <span className="pp-card-brand-badge">Power Pulz</span>
-                    )}
-                    {product.brand === "harvestvita" && (
-                      <span className="pp-card-brand-badge" style={{ background: "#2d6a46", color: "#fbf6e8" }}>HarvestVita</span>
-                    )}
-                  </div>
+                  <Link href={`/products/${product.slug}`} className="pp-card-img-wrap" aria-label={product.name}>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="pp-card-img"
+                    />
+                    <span className="pp-card-cat">{tp.categories[product.categoryKey]}</span>
+                  </Link>
                   <div className="pp-card-body">
                     <span className="pp-card-source">{product.source}</span>
-                    <h2 className="pp-card-name">{product.name}</h2>
+                    <Link href={`/products/${product.slug}`} className="pp-card-name-link">
+                      <h2 className="pp-card-name">{product.name}</h2>
+                    </Link>
                     <p className="pp-card-desc">{product.desc}</p>
-                    <p className="pp-card-price">
-                      ₹{product.price}
-                      <span>{product.weight}</span>
-                    </p>
-                    <div className="pp-card-actions">
-                      <Link href={`/products/${product.slug}`} className="pp-card-detail">
-                        View Details <ArrowRight size={12} />
-                      </Link>
-                      <AddToCartBtn
-                        slug={product.slug}
-                        name={product.name}
-                        price={product.price}
-                        weight={product.weight}
-                        image={product.image}
-                      />
+                    <div className="pp-card-price">
+                      <span className="pp-card-price-from">{c.from}</span>
+                      <span className="pp-card-price-val">{format(fromPriceInr(product))}</span>
                     </div>
+                    <div className="pp-card-actions">
+                      <button
+                        type="button"
+                        className="pp-card-add"
+                        onClick={() => {
+                          const v = product.variants[0];
+                          add({
+                            slug: product.slug,
+                            variantId: v.id,
+                            name: product.name,
+                            variantLabel: v.label,
+                            image: product.image,
+                            priceInr: v.priceInr,
+                          });
+                        }}
+                      >
+                        <ShoppingBag size={14} />
+                        {c.addToCart}
+                      </button>
+                      <Link href={`/products/${product.slug}`} className="pp-card-view">
+                        {c.viewDetails}
+                        <ArrowRight size={14} />
+                      </Link>
+                    </div>
+                    <Link href="/contact" className="pp-card-enquire">
+                      {c.enquire}
+                    </Link>
                   </div>
                 </article>
               </FadeIn>
@@ -391,11 +450,11 @@ export default function ProductsPage() {
             <div className="pp-cta-left">
               <span className="pp-cta-icon"><Leaf size={22} /></span>
               <p className="pp-cta-text">
-                Looking for bulk orders or white-label sourcing?
+                {tp.cta.text}
               </p>
             </div>
             <Link href="/contact" className="pp-cta-link">
-              Contact our trade desk
+              {tp.cta.link}
               <ArrowRight size={15} />
             </Link>
           </div>

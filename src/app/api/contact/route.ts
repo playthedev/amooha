@@ -81,7 +81,28 @@ export async function POST(req: NextRequest) {
       </div>
       <div style="padding: 16px 32px; background: #1a4a2e;">
         <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin: 0; letter-spacing: 0.12em; text-transform: uppercase;">
-          Amoohaa Farms · Agra-Mathura Highway, Agra · partnerships@amoohaa.com
+          Amoohaa Farms · Agra-Mathura Highway, Agra · letsconnect@amoohaafarms.com
+        </p>
+      </div>
+    </div>
+  `;
+
+  const confirmationHtml = `
+    <div style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; color: #1a4a2e;">
+      <div style="background: #1a4a2e; padding: 24px 32px;">
+        <h1 style="color: #d4a853; font-size: 22px; margin: 0; font-weight: 400; letter-spacing: 0.05em;">
+          We've Received Your Enquiry — Amoohaa Farms
+        </h1>
+      </div>
+      <div style="padding: 32px; background: #faf6ef; border: 1px solid #e8e0d0; font-size: 15px; color: #3d3d36; line-height: 1.8;">
+        <p>Hi ${escHtml(name)},</p>
+        <p>Thank you for reaching out to Amoohaa Farms. We've received your enquiry and our team will get back to you within 1–2 business days.</p>
+        <p style="margin-top: 24px; font-size: 12px; color: #8a8a80;">A copy of your message:</p>
+        <p style="font-size: 14px; color: #3d3d36; line-height: 1.8; white-space: pre-wrap; border-left: 3px solid #e8e0d0; padding-left: 12px;">${escHtml(message)}</p>
+      </div>
+      <div style="padding: 16px 32px; background: #1a4a2e;">
+        <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin: 0; letter-spacing: 0.12em; text-transform: uppercase;">
+          Amoohaa Farms · Agra-Mathura Highway, Agra · letsconnect@amoohaafarms.com
         </p>
       </div>
     </div>
@@ -96,6 +117,18 @@ export async function POST(req: NextRequest) {
       html: htmlBody,
       text: `New enquiry from ${name} (${email})\nCompany: ${company ?? "—"}\nType: ${enquiryType ?? "—"}\n\n${message}`,
     });
+
+    try {
+      await transporter.sendMail({
+        from: `"${CONTACT_FROM_NAME ?? "Amoohaa Farms"}" <${SMTP_USER}>`,
+        to: email,
+        subject: "We've received your enquiry — Amoohaa Farms",
+        html: confirmationHtml,
+        text: `Hi ${name},\n\nThank you for reaching out to Amoohaa Farms. We've received your enquiry and our team will get back to you within 1-2 business days.\n\nYour message:\n${message}`,
+      });
+    } catch (err) {
+      console.error("Failed to send enquiry confirmation email to submitter:", err);
+    }
 
     return NextResponse.json({ success: true });
   } catch (err) {

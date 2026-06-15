@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -12,65 +14,14 @@ import {
   Handshake,
   TrendingUp,
 } from "lucide-react";
+import { useT } from "@/i18n/language-provider";
 
-const commitments = [
-  {
-    number: "01",
-    title: "Responsible Sourcing",
-    body: "We build long-term relationships with farmers and suppliers, ensuring every ingredient is grown and traded with honesty, fairness, and care.",
-    icon: Sprout,
-  },
-  {
-    number: "02",
-    title: "Waste Discipline",
-    body: "From product formulation to packaging decisions, we ask hard questions about what is necessary — and reduce what isn't.",
-    icon: Recycle,
-  },
-  {
-    number: "03",
-    title: "Transparent Communication",
-    body: "Our farm-to-brand journey is something we openly share — so customers and partners understand exactly what they're buying and why.",
-    icon: ScanSearch,
-  },
-  {
-    number: "04",
-    title: "Long-Term Value",
-    body: "Growth that respects people, land, and future opportunity. We measure success not just in revenue, but in lasting relationships.",
-    icon: Leaf,
-  },
-];
-
-const principles = [
-  {
-    icon: TreePine,
-    title: "Soil to shelf",
-    body: "Every product decision traces back to the source — how it was grown, where, and by whom.",
-  },
-  {
-    icon: Users,
-    title: "Farmer first",
-    body: "We don't treat sourcing as a transaction. Fair pricing and long partnerships are non-negotiable.",
-  },
-  {
-    icon: Handshake,
-    title: "Partner trust",
-    body: "Distributors and retailers carry our products knowing the standard behind every batch.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Measured growth",
-    body: "Expansion happens when it can be done responsibly — not just when it's profitable.",
-  },
-];
-
-const impactMetrics = [
-  { value: "100%", label: "Traceable ingredient standard" },
-  { value: "500+", label: "Farm families connected" },
-  { value: "3+", label: "States sourced from" },
-  { value: "01", label: "Shared quality benchmark" },
-];
+// Icons stay constant across locales; aligned by index with the dictionary.
+const commitmentIcons = [Sprout, Recycle, ScanSearch, Leaf];
+const principleIcons = [TreePine, Users, Handshake, TrendingUp];
 
 export default function SustainabilityPage() {
+  const ts = useT().sustainability;
   return (
     <main className="bg-[var(--paper)] text-[var(--ink)]">
 
@@ -93,17 +44,15 @@ export default function SustainabilityPage() {
           {/* Kicker */}
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[var(--wheat)]" />
-            <span className="label-caps text-[var(--wheat)] tracking-[0.24em]">Stewardship</span>
+            <span className="label-caps text-[var(--wheat)] tracking-[0.24em]">{ts.hero.kicker}</span>
           </div>
 
           <h1 className="display-serif mt-7 max-w-4xl text-5xl font-normal leading-[1.08] sm:text-6xl lg:text-7xl">
-            Growth that keeps the farm, family, and future in view.
+            {ts.hero.title}
           </h1>
 
           <p className="mt-8 max-w-2xl text-lg leading-8 text-white/76">
-            Amoohaa Farms treats sustainability as a business discipline: better
-            sourcing, smarter packaging, clearer communication, and long-term
-            value for farmers, partners, and customers.
+            {ts.hero.body}
           </p>
 
           <div className="mt-12 flex flex-col gap-4 sm:flex-row">
@@ -111,21 +60,21 @@ export default function SustainabilityPage() {
               href="/contact"
               className="inline-flex h-13 items-center justify-center gap-3 bg-[var(--wheat)] px-8 text-[11px] font-extrabold uppercase tracking-[0.2em] text-[var(--leaf-dark)] transition hover:brightness-105"
             >
-              Partner with us
+              {ts.hero.partnerCta}
               <ArrowRight size={15} />
             </Link>
             <Link
               href="/introduction"
               className="inline-flex h-13 items-center justify-center border border-white/28 px-8 text-[11px] font-extrabold uppercase tracking-[0.2em] text-white transition hover:bg-white/8 hover:border-white/55"
             >
-              Our story
+              {ts.hero.storyCta}
             </Link>
           </div>
 
           {/* Bottom scroll hint */}
           <div className="mt-20 flex items-center gap-3 text-white/35">
             <div className="h-px w-10 bg-white/20" />
-            <span className="text-[10px] font-bold uppercase tracking-[0.22em]">Our commitments</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.22em]">{ts.hero.scroll}</span>
           </div>
         </div>
 
@@ -140,19 +89,19 @@ export default function SustainabilityPage() {
             <div className="lg:col-span-7">
               <div className="flex items-center gap-3">
                 <span className="h-px w-6 bg-[var(--wheat-deep)]" />
-                <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">Our Position</span>
+                <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">{ts.intro.kicker}</span>
               </div>
               <p className="display-serif mt-5 text-3xl font-normal leading-snug text-[var(--leaf-dark)] sm:text-4xl">
-                "Sustainability isn't a campaign for us. It's the operating standard that connects every farm decision to every product on shelf."
+                {ts.intro.quote}
               </p>
             </div>
             <div className="lg:col-span-5 lg:pl-10">
               <div className="border-l-2 border-[var(--wheat)] pl-6">
                 <p className="text-[14px] leading-8 text-[var(--stone)]">
-                  From the soil our ingredients grow in, to the packaging that reaches a household, every step is a deliberate choice — and one we're accountable for.
+                  {ts.intro.para1}
                 </p>
                 <p className="mt-4 text-[14px] leading-8 text-[var(--stone)]">
-                  We share this framework publicly because we believe responsible businesses should be legible ones.
+                  {ts.intro.para2}
                 </p>
               </div>
             </div>
@@ -167,15 +116,17 @@ export default function SustainabilityPage() {
           <div className="mb-14">
             <div className="flex items-center gap-3">
               <span className="h-px w-6 bg-[var(--wheat-deep)]" />
-              <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">Framework</span>
+              <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">{ts.framework.kicker}</span>
             </div>
             <h2 className="display-serif mt-3 text-4xl font-normal sm:text-5xl">
-              Four commitments.<br className="hidden sm:block" /> One standard.
+              {ts.framework.headingLine1}<br className="hidden sm:block" />{ts.framework.headingLine2}
             </h2>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
-            {commitments.map(({ number, title, body, icon: Icon }) => (
+            {ts.framework.items.map(({ number, title, body }, i) => {
+              const Icon = commitmentIcons[i];
+              return (
               <article
                 key={title}
                 className="group relative flex flex-col border border-[var(--line)] bg-[var(--cream)] p-10 transition-all duration-300 hover:border-[var(--wheat)] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-green-900/6"
@@ -202,7 +153,8 @@ export default function SustainabilityPage() {
                 </h2>
                 <p className="mt-4 flex-1 text-[14px] leading-8 text-[var(--stone)]">{body}</p>
               </article>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -212,10 +164,12 @@ export default function SustainabilityPage() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 flex items-center gap-3">
             <span className="h-px w-6 bg-[var(--leaf-dark)]/30" />
-            <span className="label-caps text-[var(--leaf-dark)]/55 tracking-[0.22em]">Guiding Principles</span>
+            <span className="label-caps text-[var(--leaf-dark)]/55 tracking-[0.22em]">{ts.principles.kicker}</span>
           </div>
           <div className="grid gap-px bg-[var(--leaf-dark)]/10 sm:grid-cols-2 lg:grid-cols-4">
-            {principles.map(({ icon: Icon, title, body }) => (
+            {ts.principles.items.map(({ title, body }, i) => {
+              const Icon = principleIcons[i];
+              return (
               <div
                 key={title}
                 className="group flex flex-col bg-[var(--wheat)] p-8 transition-colors hover:bg-[var(--leaf-dark)]"
@@ -230,7 +184,8 @@ export default function SustainabilityPage() {
                   {body}
                 </p>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -242,22 +197,22 @@ export default function SustainabilityPage() {
             <div className="lg:col-span-5">
               <div className="flex items-center gap-3">
                 <span className="h-px w-6 bg-[var(--wheat)]" />
-                <span className="label-caps text-[var(--wheat)] tracking-[0.22em]">Impact</span>
+                <span className="label-caps text-[var(--wheat)] tracking-[0.22em]">{ts.impact.kicker}</span>
               </div>
               <h2 className="display-serif mt-3 text-4xl font-normal sm:text-5xl">
-                Accountability in numbers
+                {ts.impact.heading}
               </h2>
             </div>
             <div className="lg:col-span-7 lg:pl-10">
               <p className="text-[14px] leading-8 text-white/55">
-                These aren't aspirational targets — they reflect where Amoohaa Farms stands today, and the standard we hold ourselves to as we grow.
+                {ts.impact.intro}
               </p>
             </div>
           </div>
 
           {/* Metrics grid */}
           <div className="grid grid-cols-1 gap-px bg-white/8 sm:grid-cols-2 lg:grid-cols-4">
-            {impactMetrics.map(({ value, label }) => (
+            {ts.impact.metrics.map(({ value, label }) => (
               <div key={label} className="flex min-h-40 flex-col justify-between bg-[var(--leaf-dark)] p-6 sm:min-h-52 sm:p-8 lg:p-10">
                 <p className="display-serif text-4xl font-normal leading-none text-[var(--wheat)] sm:text-5xl lg:text-6xl">
                   {value}
@@ -278,10 +233,10 @@ export default function SustainabilityPage() {
               </div>
               <div>
                 <p className="text-[13px] font-extrabold uppercase tracking-[0.16em] text-white">
-                  FSSAI aligned — every product, every batch
+                  {ts.impact.card1Title}
                 </p>
                 <p className="mt-1.5 text-[12px] leading-6 text-white/45">
-                  No exceptions to our ingredient and labelling standard.
+                  {ts.impact.card1Body}
                 </p>
               </div>
             </div>
@@ -291,10 +246,10 @@ export default function SustainabilityPage() {
               </div>
               <div>
                 <p className="text-[13px] font-extrabold uppercase tracking-[0.16em] text-white">
-                  One shared farm standard across all brands
+                  {ts.impact.card2Title}
                 </p>
                 <p className="mt-1.5 text-[12px] leading-6 text-white/45">
-                  Power Pulz and future lines all trace back to the same origin benchmark.
+                  {ts.impact.card2Body}
                 </p>
               </div>
             </div>
@@ -315,11 +270,11 @@ export default function SustainabilityPage() {
         <div className="relative z-10 flex h-full items-center justify-center px-5 text-center">
           <div>
             <p className="display-serif text-3xl font-normal text-white sm:text-4xl lg:text-5xl">
-              "From the soil to the shelf — traceable, honest, responsible."
+              {ts.quoteBreak.text}
             </p>
             <div className="mx-auto mt-5 flex items-center justify-center gap-3">
               <span className="h-px w-8 bg-[var(--wheat)]/60" />
-              <span className="label-caps text-[11px] text-[var(--wheat)] tracking-[0.22em]">Amoohaa Farms</span>
+              <span className="label-caps text-[11px] text-[var(--wheat)] tracking-[0.22em]">{ts.quoteBreak.attribution}</span>
               <span className="h-px w-8 bg-[var(--wheat)]/60" />
             </div>
           </div>
@@ -333,13 +288,13 @@ export default function SustainabilityPage() {
             <div>
               <div className="flex items-center gap-3">
                 <span className="h-px w-6 bg-[var(--wheat-deep)]" />
-                <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">Work with us</span>
+                <span className="label-caps text-[var(--wheat-deep)] tracking-[0.22em]">{ts.cta.kicker}</span>
               </div>
               <h2 className="display-serif mt-3 text-3xl font-normal sm:text-4xl">
-                Interested in responsible sourcing?
+                {ts.cta.heading}
               </h2>
               <p className="mt-4 max-w-lg text-[14px] leading-7 text-[var(--stone)]">
-                If you're a farmer, distributor, or brand looking to work with an ingredient-led business, we'd like to hear from you.
+                {ts.cta.body}
               </p>
             </div>
             <div className="flex shrink-0 flex-col gap-3 sm:items-end">
@@ -347,14 +302,14 @@ export default function SustainabilityPage() {
                 href="/contact"
                 className="inline-flex h-13 items-center justify-center gap-3 bg-[var(--leaf-dark)] px-8 text-[11px] font-extrabold uppercase tracking-[0.2em] text-white transition hover:bg-[var(--leaf)]"
               >
-                Get in touch
+                {ts.cta.getInTouch}
                 <ArrowRight size={15} />
               </Link>
               <Link
                 href="/introduction"
                 className="inline-flex h-10 items-center justify-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.18em] text-[var(--leaf-dark)] transition hover:text-[var(--leaf)]"
               >
-                Read our story
+                {ts.cta.readStory}
                 <ArrowRight size={13} />
               </Link>
             </div>

@@ -8,8 +8,8 @@ import {
   useRef,
   useState,
 } from "react";
-import Link from "next/link";
 import { ArrowRight, Hourglass, Leaf, Wheat } from "lucide-react";
+import { useT } from "@/i18n/language-provider";
 
 const ppTags = ["Nutrition First", "Agro Sourced", "Plant Protein"];
 const hvTags = ["Harvest Fresh", "Vitamin Rich", "Natural Wellness"];
@@ -56,6 +56,7 @@ function FadeIn({
 }
 
 export default function BrandsPage() {
+  const tb = useT().brandsPage;
   const [ppLoaded, setPpLoaded] = useState(false);
   const [hvLoaded, setHvLoaded] = useState(false);
 
@@ -242,20 +243,20 @@ export default function BrandsPage() {
             <FadeIn>
               <div className="bp-header">
                 <div>
-                  <span className="bp-eyebrow">Portfolio</span>
+                  <span className="bp-eyebrow">{tb.eyebrow}</span>
                   <h1 className="bp-page-title">
-                    Brands rooted in <em>real agriculture.</em>
+                    {tb.titlePre} <em>{tb.titleEm}</em>
                   </h1>
                   <div className="bp-title-rule" />
                 </div>
                 <div className="bp-stat-pills">
                   <div className="bp-stat-pill">
                     <Wheat size={20} />
-                    Harvest-led portfolio
+                    {tb.pills[0]}
                   </div>
                   <div className="bp-stat-pill">
                     <Leaf size={20} />
-                    Farm-origin products
+                    {tb.pills[1]}
                   </div>
                 </div>
               </div>
@@ -264,12 +265,12 @@ export default function BrandsPage() {
             {/* ── BRAND 1: POWER PULZ ── */}
             <FadeIn delay={0.1}>
               <div className="bp-meta-row">
-                <span className="bp-meta-label">Active brand · 01 of 02</span>
-                <span className="bp-meta-tag">Live</span>
+                <span className="bp-meta-label">{tb.metaLabel}</span>
+                <span className="bp-meta-tag">{tb.metaTag}</span>
               </div>
 
               <a
-                href="https://power-pulz.vercel.app/"
+                href="https://www.powerpulz.com/"
                 target="_blank"
                 rel="noreferrer"
                 className="bp-brand-card"
@@ -287,27 +288,25 @@ export default function BrandsPage() {
                   <div className="bp-brand-left">
                     <span className="bp-brand-name">Power Pulz</span>
                     <p className="bp-brand-desc">
-                      Performance nutrition for modern households and active
-                      lifestyles. Seeds, makhana, and plant protein, positioned
-                      with the Amoohaa Farms harvest-to-market standard.
+                      {tb.desc}
                     </p>
                     <div className="bp-brand-tags">
-                      {ppTags.map((tag) => (
+                      {tb.tags.map((tag: string) => (
                         <span key={tag} className="bp-brand-tag">
                           #{tag.replaceAll(" ", "")}
                         </span>
                       ))}
                     </div>
                     <span className="bp-brand-cta">
-                      Visit Power Pulz
+                      {tb.cta}
                       <ArrowRight size={15} />
                     </span>
                   </div>
 
                   <div className="bp-brand-right">
-                    <span className="bp-brand-cat-label">Category</span>
+                    <span className="bp-brand-cat-label">{tb.categoryLabel}</span>
                     <span className="bp-brand-cat">
-                      Performance<br />Nutrition
+                      {tb.catLine1}<br />{tb.catLine2}
                     </span>
                   </div>
                 </div>
@@ -324,7 +323,12 @@ export default function BrandsPage() {
                 <span className="bp-meta-tag">New</span>
               </div>
 
-              <Link href="/products" className="bp-brand-card">
+              <a
+                href="https://www.harvestvita.com/"
+                target="_blank"
+                rel="noreferrer"
+                className="bp-brand-card"
+              >
                 <img
                   src={hvImage}
                   alt="HarvestVita — Natural Wellness"
@@ -363,7 +367,7 @@ export default function BrandsPage() {
                     </span>
                   </div>
                 </div>
-              </Link>
+              </a>
             </FadeIn>
 
             {/* ── PIPELINE ── */}
@@ -373,10 +377,9 @@ export default function BrandsPage() {
                   <Hourglass size={28} />
                 </div>
                 <div>
-                  <p className="bp-pipeline-title">More brands in the pipeline.</p>
+                  <p className="bp-pipeline-title">{tb.pipeline.title}</p>
                   <p className="bp-pipeline-sub">
-                    Amoohaa Farms is built to expand its agricultural product ecosystem —
-                    more categories, more formats, same uncompromising farm standard.
+                    {tb.pipeline.sub}
                   </p>
                 </div>
               </div>
