@@ -31,7 +31,7 @@ const produceImage =
 const detailIcons = [Mail, Phone, MapPin];
 const enquiryIcons = [Sprout, BriefcaseBusiness, Building2];
 const CONTACT_EMAIL = "letsconnect@amoohaafarms.com";
-const CONTACT_PHONE = "+91 (562) 285-0044";
+const CONTACT_PHONE = "+91 91639 69111 / +91 93399 98587";
 
 function useInView(threshold = 0.1): [RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement | null>(null);

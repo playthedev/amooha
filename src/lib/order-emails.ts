@@ -32,7 +32,7 @@ function layout(opts: { heading: string; bodyHtml: string }): string {
       </div>
       <div style="padding: 16px 32px; background: #1a4a2e;">
         <p style="font-size: 11px; color: rgba(255,255,255,0.4); margin: 0; letter-spacing: 0.12em; text-transform: uppercase;">
-          Amoohaa Farms · Agra-Mathura Highway, Agra · letsconnect@amoohaafarms.com
+          Amooha Farms Pvt Ltd. · Kristal Quartz 5, Flat # 101, 1st Floor, Kristal Quartz 10, SH 35, Chikkadunnasandra, Yamare, Bangalore 562125 · letsconnect@amoohaafarms.com
         </p>
       </div>
     </div>

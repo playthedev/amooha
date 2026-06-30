@@ -13,9 +13,9 @@ export type PolicySection = {
   steps?: { title: string; text: string }[];
 };
 
-const COMPANY = "Amoohaa Farms Agro Business";
+const COMPANY = "Amooha Farms Pvt Ltd.";
 const EMAIL = "letsconnect@amoohaafarms.com";
-const ADDRESS = "Agra-Mathura Highway, Agra, Uttar Pradesh, India";
+const ADDRESS = "Kristal Quartz 5, Flat # 101, 1st Floor, Kristal Quartz 10, SH 35, Chikkadunnasandra, Yamare, Bangalore 562125";
 
 export function fillTokens(text: string): ReactNode {
   const parts = text.split(/(\{COMPANY\}|\{EMAIL\}|\{ADDRESS\})/g);

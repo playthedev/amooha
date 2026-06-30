@@ -27,6 +27,8 @@ export function SiteHeader() {
     { href: `/products`,     label: t.shell.nav.products },
     { href: `/brands`,       label: t.shell.nav.brands },
     { href: `/sustainability`, label: t.shell.nav.sustainability },
+    { href: `/blog`,         label: t.shell.nav.blog },
+    { href: `/myths`,        label: t.shell.nav.myths },
     { href: `/contact`,      label: t.shell.nav.contact },
   ];
 
@@ -61,7 +63,7 @@ export function SiteHeader() {
         </div>
 
         {/* Main nav */}
-        <nav className="mx-auto flex h-[86px] max-w-7xl items-center justify-between px-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-10">
+        <nav className="mx-auto flex h-[94px] max-w-7xl items-center justify-between px-4 sm:px-8 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:px-10 sm:h-[114px]">
 
           {/* Left — hamburger (mobile) / nav links (desktop) */}
           <div className="order-2 flex items-center justify-end gap-3 lg:order-none lg:justify-start">
@@ -101,29 +103,15 @@ export function SiteHeader() {
             href="/"
             className="order-1 flex min-w-0 items-center gap-3 transition-opacity duration-200 hover:opacity-85 lg:order-none"
           >
-            <span className="relative h-[60px] w-[60px] shrink-0 overflow-hidden rounded-full border-2 border-[color:rgba(184,121,13,0.35)] bg-[var(--paper)] shadow-md shadow-green-950/10 sm:h-[72px] sm:w-[72px]">
+            <span className="relative h-[88px] w-[64px] shrink-0 sm:h-[108px] sm:w-[79px]">
               <Image
-                src="/amoohaa-farms-logo.jpeg"
+                src="/amooha.png"
                 alt="Amoohaa Farms"
                 fill
-                sizes="72px"
-                className="object-cover"
+                sizes="120px"
+                className="object-contain"
                 priority
               />
-            </span>
-            <span className="min-w-0">
-              <span
-                className="block text-[1.05rem] font-normal leading-tight text-[var(--leaf-dark)] sm:text-[1.4rem]"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.01em" }}
-              >
-                Amoohaa Farms
-              </span>
-              <span
-                className="hidden text-[9px] font-light uppercase tracking-[0.28em] text-[var(--wheat-deep)] sm:block"
-                style={{ fontFamily: "'Josefin Sans', sans-serif" }}
-              >
-                Agro Business
-              </span>
             </span>
           </Link>
 
@@ -260,26 +248,15 @@ export function SiteFooter() {
           {/* Brand column */}
           <div className="sm:col-span-2 lg:col-span-4">
             <div className="flex items-center gap-4">
-              <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-white/20 bg-[var(--paper)] shadow-md sm:h-20 sm:w-20">
+              <span className="relative h-[104px] w-[104px] shrink-0 overflow-hidden rounded-full bg-[var(--paper)] shadow-md sm:h-[120px] sm:w-[120px]">
                 <Image
-                  src="/amoohaa-farms-logo.jpeg"
+                  src="/amooha.png"
                   alt="Amoohaa Farms"
                   fill
-                  sizes="80px"
-                  className="object-cover"
+                  sizes="120px"
+                  className="object-contain p-3"
                 />
               </span>
-              <div>
-                <p
-                  className="text-lg font-normal leading-tight sm:text-2xl"
-                  style={{ fontFamily: "'Playfair Display', Georgia, serif", letterSpacing: "0.01em" }}
-                >
-                  Amoohaa Farms
-                </p>
-                <p className="mt-1 text-[9px] font-light uppercase tracking-[0.28em] text-[var(--wheat)]">
-                  {t.shell.footer.tagline}
-                </p>
-              </div>
             </div>
             <p className="mt-5 max-w-sm text-[12px] font-light leading-7 tracking-normal text-white/60">
               {t.shell.footer.blurb}
@@ -342,6 +319,8 @@ export function SiteFooter() {
               <div className="mt-4 flex flex-col gap-3 text-[12px] font-light tracking-[0.04em] text-white/60">
                 <Link href="/introduction" className="w-fit transition-colors hover:text-white">{t.shell.footer.linkOurStory}</Link>
                 <Link href="/sustainability" className="w-fit transition-colors hover:text-white">{t.shell.footer.linkSustainability}</Link>
+                <Link href="/blog" className="w-fit transition-colors hover:text-white">{t.shell.footer.linkBlog}</Link>
+                <Link href="/myths" className="w-fit transition-colors hover:text-white">{t.shell.footer.linkMyths}</Link>
                 <Link href="/contact" className="w-fit transition-colors hover:text-white">{t.shell.footer.linkContact}</Link>
               </div>
             </div>
