@@ -369,8 +369,20 @@ export function SiteFooter() {
 
       {/* Bottom bar */}
       <div className="border-t border-white/10">
-        <div className="mx-auto px-4 py-5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white/30 sm:px-8 lg:px-10">
+        <div className="mx-auto flex flex-col items-center justify-center gap-1 px-4 py-5 text-center text-[10px] font-semibold uppercase tracking-[0.18em] text-white/30 sm:flex-row sm:gap-3 sm:px-8 lg:px-10">
           <span>{t.shell.footer.copyright} · {t.shell.footer.bottomTagline}</span>
+          <span className="hidden sm:inline">·</span>
+          <span>
+            Built by{" "}
+            <a
+              href="https://nexmogen.com/"
+              target="_blank"
+              rel="noreferrer"
+              className="text-white/50 transition-colors hover:text-[var(--wheat)]"
+            >
+              Nexmogen ↗
+            </a>
+          </span>
         </div>
       </div>
     </footer>
